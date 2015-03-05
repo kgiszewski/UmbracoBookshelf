@@ -1,0 +1,14 @@
+﻿{
+  "javascript": [
+    "~/App_Plugins/UmbracoBookshelf/js/file.controller.js",
+    "~/App_Plugins/UmbracoBookshelf/js/folder.controller.js",
+    "~/App_Plugins/UmbracoBookshelf/js/resources.js",
+    "~/App_Plugins/UmbracoBookshelf/js/services.js",
+    "~/App_Plugins/UmbracoBookshelf/js/directives.js",
+    "~/App_Plugins/UmbracoBookshelf/js/marked.min.js"
+  ],
+  "css": [
+    "~/App_Plugins/UmbracoBookshelf/css/application.css"
+  ]
+}
+

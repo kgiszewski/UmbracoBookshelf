@@ -1,0 +1,16 @@
+﻿<div ng-controller="UmbracoBookshelfFolderController">
+    <umb-panel>
+        <umb-header tabs="content.tabs">
+            <div class="umb-headline-editor-wrapper span12">
+                <h1 class="ng-binding">{{model.dirPath}}</h1>
+            </div>
+        </umb-header>
+        <umb-tab-view>
+            <umb-tab id="tab1" rel="content">
+                <div class="umb-pane">
+                    <div class="bookshelf-markup" umbraco-bookshelf-marked-up="{{model.content}}"></div>
+                </div>
+            </umb-tab>
+        </umb-tab-view>
+    </umb-panel>
+</div>
