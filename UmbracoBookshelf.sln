@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoBookshelf", "UmbracoBookshelf\UmbracoBookshelf.csproj", "{729FED9B-CA1F-421D-BCC4-37A0AEE6064C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoBookshelf", "src\UmbracoBookshelf.csproj", "{729FED9B-CA1F-421D-BCC4-37A0AEE6064C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

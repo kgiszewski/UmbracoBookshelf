@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+        <metadata>
+                <id>UmbracoBookshelf</id>
+                <version><%= version %></version>
+                <title><%= name %></title>
+                <authors>kgiszewski</authors>
+                <owners>kgiszewski</owners>
+                <projectUrl>http://github.com/kgiszewski/umbracobookshelf</projectUrl>
+                <description><![CDATA[Bookshelf for Umbraco]]></description>
+                <tags>umbraco</tags>
+                <iconUrl>http://github.com/kgiszewski/umbracobookshelf/raw/master/assets/logo.png</iconUrl>
+                <licenseUrl><%= licenseUrl %></licenseUrl>
+        </metadata>
+</package>

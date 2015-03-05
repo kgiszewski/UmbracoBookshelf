@@ -1,11 +1,12 @@
 #Welcome#
+*Version 0.1*
 
 Thanks for downloading Umbraco Bookshelf!  Bookshelf will allow users to create, display and share Umbraco learning resources quickly.
 
 Bookshelf works by reading markdown files from the `UmbracoBookshelf` folder of your website. 
 
 ##Install a Book##
-Books are available via http://our.umbraco.org in the packages section.  Install like you would any other Umbraco Packge.
+Books are available via http://our.umbraco.org in the packages section.  Install like you would any other Umbraco Package.
 
 ##Editing a Book##
 To edit a book, simply click `Edit` on an `.md` file page.  If the book is hosted on GitHub, please consider sending revisions and additional content.
