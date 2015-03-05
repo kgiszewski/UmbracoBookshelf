@@ -19,6 +19,18 @@
         return "/UmbracoBookshelf" + relativePath;
     }
 
+    function isRelative($element, attribute) {
+        return (!isExternal($element, attribute) && $element.attr(attribute).indexOf('/') != 0);
+    }
+
+    function isExternal($element, attribute) {
+        return $element.attr(attribute).indexOf('http') == 0;
+    }
+
+    function cleanForwardSlashes(input) {
+        return input.replace(/\%2f/gi, '%252F');
+    }
+
     var linker = function (scope, element, attrs) {
         scope.$watch('model.content', function (newValue, oldValue) {
             if (newValue) {
@@ -26,17 +38,24 @@
                 var relativePath = getRelativePath();
 
                 /* adding global rule for external links */
-                markup.find('a').each(function() {
+                markup.find('a').each(function () {
                     var $a = $(this);
-                    if ($a.attr('href').indexOf('http') == 0) {
+
+                    if (isExternal($a, 'href')) {
                         $a.attr('target', '_blank');
+                    } else {
+                        if (isRelative($a, 'href')) {
+                            if ($a.attr('href').indexOf('/') != 0) {
+                                $a.attr('href', "/umbraco/#/UmbracoBookshelf/UmbracoBookshelfTree/file/" + cleanForwardSlashes(encodeURIComponent(relativePath.replace(/\/UmbracoBookshelf/g, '') + $a.attr('href'))));
+                            }
+                        }
                     }
                 });
 
                 /* fixup image relative paths */
                 markup.find('img').each(function () {
                     var $img = $(this);
-                    if ($img.attr('src').indexOf('http') != 0 && $img.attr('src').indexOf('/') != 0) {
+                    if (isRelative($img, 'src')) {
                         $img.attr('src', relativePath + $img.attr('src'));
                     }
                 });
