@@ -13,22 +13,17 @@ module.exports = function(grunt) {
         spawn: false,
         atBegin: true
       },
+	  
+	  less: {
+        files: ['src/Assets/less/*.less'],
+        tasks: ['less:dist']
+      },
 
-      html: {
-        files: ['src/**/*.html'],
+      app_plugins: {
+        files: ['src/**/**'],
         tasks: ['copy:app_plugins', 'copy:initialContent']
       },
-	  
-	  css: {
-        files: ['src/**/*.css'],
-        tasks: ['copy:app_plugins', 'copy:initialContent']
-      },
-	  
-	  js: {
-        files: ['src/**/*.js'],
-        tasks: ['copy:app_plugins', 'copy:initialContent']
-      },
-	  
+
 	  initialContent: {
         files: ['src/InitialContent/*'],
         tasks: ['copy:app_plugins', 'copy:initialContent']
@@ -39,11 +34,22 @@ module.exports = function(grunt) {
         tasks: ['copy:dll']
       }
     },
+	
+	less: {
+      dist: {
+        options: {
+          paths: ["src/assets/less"],
+        },
+        files: {
+          '<%= basePath %>/css/application.css': 'src/assets/less/application.less',
+        }
+      }
+    },
 
     copy: {
       app_plugins: {
         cwd: 'src/App_Plugins/UmbracoBookshelf',
-        src: ['**'],
+        src: ['**', '!css', '!css/*'],
         dest: '<%= basePath %>',
         expand: true
       },
@@ -191,7 +197,7 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.registerTask('default', ['clean', 'assemblyinfo', 'msbuild:dist', 'copy:initialContent', 'copy:dll', 'copy:actionsdll', 'copy:app_plugins']);
+  grunt.registerTask('default', ['clean', 'less', 'assemblyinfo', 'msbuild:dist', 'copy:initialContent', 'copy:dll', 'copy:actionsdll', 'copy:app_plugins']);
 
   grunt.registerTask('nuget',   ['clean:tmp', 'default', 'copy:nuget', 'template:nuspec', 'nugetpack']);
   grunt.registerTask('umbraco', ['clean:tmp', 'default', 'copy:umbraco', 'umbracoPackage']);
