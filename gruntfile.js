@@ -30,8 +30,8 @@ module.exports = function(grunt) {
       },
 
       dll: {
-        files: ['src/bin/**/*.dll'],
-        tasks: ['copy:dll']
+        files: ['src/**/*.cs'],
+        tasks: ['msbuild:dist', 'copy:dll']
       }
     },
 	
@@ -54,12 +54,12 @@ module.exports = function(grunt) {
         expand: true
       },
       dll: {
-        cwd: 'src/bin/Release/',
+        cwd: 'src/bin/debug/',
         src: 'UmbracoBookshelf.dll',
         dest: '<%= dest %>/bin/',
         expand: true
       },
-	  actionsdll: {
+	  actionsDll: {
         cwd: 'lib/',
         src: 'PackageActionsContrib.dll',
         dest: '<%= dest %>/bin/',
@@ -189,7 +189,7 @@ module.exports = function(grunt) {
       dist: {
         src: ['src/UmbracoBookshelf.csproj'],
         options: {
-          projectConfiguration: 'Release',
+          projectConfiguration: 'Debug',
           targets: ['Clean', 'Rebuild'],
         }
       }
@@ -197,8 +197,7 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.registerTask('default', ['clean', 'less', 'assemblyinfo', 'msbuild:dist', 'copy:initialContent', 'copy:dll', 'copy:actionsdll', 'copy:app_plugins']);
-
+  grunt.registerTask('default', ['clean', 'less', 'assemblyinfo', 'msbuild:dist', 'copy:initialContent', 'copy:dll', 'copy:actionsDll', 'copy:app_plugins']);
   grunt.registerTask('nuget',   ['clean:tmp', 'default', 'copy:nuget', 'template:nuspec', 'nugetpack']);
   grunt.registerTask('umbraco', ['clean:tmp', 'default', 'copy:umbraco', 'umbracoPackage']);
   grunt.registerTask('package', ['clean:tmp', 'default', 'copy:nuget', 'template:nuspec', 'nugetpack', 'copy:umbraco', 'umbracoPackage', 'clean:tmp']);
