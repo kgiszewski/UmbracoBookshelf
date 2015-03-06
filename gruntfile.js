@@ -16,7 +16,22 @@ module.exports = function(grunt) {
 
       html: {
         files: ['src/**/*.html'],
-        tasks: ['copy:app_plugins']
+        tasks: ['copy:app_plugins', 'copy:initialContent']
+      },
+	  
+	  css: {
+        files: ['src/**/*.css'],
+        tasks: ['copy:app_plugins', 'copy:initialContent']
+      },
+	  
+	  js: {
+        files: ['src/**/*.js'],
+        tasks: ['copy:app_plugins', 'copy:initialContent']
+      },
+	  
+	  initialContent: {
+        files: ['src/InitialContent/*'],
+        tasks: ['copy:app_plugins', 'copy:initialContent']
       },
 
       dll: {
@@ -38,12 +53,30 @@ module.exports = function(grunt) {
         dest: '<%= dest %>/bin/',
         expand: true
       },
+	  actionsdll: {
+        cwd: 'lib/',
+        src: 'PackageActionsContrib.dll',
+        dest: '<%= dest %>/bin/',
+        expand: true
+      },
+	  initialContent: {
+        cwd: 'src/InitialContent/UmbracoBookshelf/',
+        src: ['**'],
+        dest: '<%= dest %>/UmbracoBookshelf/',
+        expand: true
+      },
       nuget: {
         files: [
           {
             cwd: '<%= dest %>/App_Plugins',
             src: ['**/*', '!bin', '!bin/*'],
-            dest: 'tmp/nuget/content',
+            dest: 'tmp/nuget/content/App_Plugins',
+            expand: true
+          },
+		  {
+            cwd: '<%= dest %>/UmbracoBookshelf/',
+            src: ['**/*'],
+            dest: 'tmp/nuget/content/UmbracoBookshelf',
             expand: true
           },
           {
@@ -73,15 +106,14 @@ module.exports = function(grunt) {
     	'nuspec': {
 			'options': {
     			'data': { 
-            name: '<%= pkgMeta.name %>',
-    				version: '<%= pkgMeta.version %>',
-            url: '<%= pkgMeta.url %>',
-            license: '<%= pkgMeta.license %>',
-            licenseUrl: '<%= pkgMeta.licenseUrl %>',
-            author: '<%= pkgMeta.author %>',
-            authorUrl: '<%= pkgMeta.authorUrl %>',
-
-    				files: [{ path: 'tmp/nuget/**', target: 'content/App_Plugins/UmbracoBookshelf'}]
+					name: '<%= pkgMeta.name %>',
+					version: '<%= pkgMeta.version %>',
+					url: '<%= pkgMeta.url %>',
+					license: '<%= pkgMeta.license %>',
+					licenseUrl: '<%= pkgMeta.licenseUrl %>',
+					author: '<%= pkgMeta.author %>',
+					authorUrl: '<%= pkgMeta.authorUrl %>',
+					files: [{ path: 'tmp/nuget/content/App_Plugins', target: 'content/App_Plugins'}]
 	    		}
     		},
     		'files': { 
@@ -159,9 +191,9 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.registerTask('default', ['clean', 'assemblyinfo', 'msbuild:dist', 'copy:dll', 'copy:app_plugins']);
+  grunt.registerTask('default', ['clean', 'assemblyinfo', 'msbuild:dist', 'copy:initialContent', 'copy:dll', 'copy:actionsdll', 'copy:app_plugins']);
 
-  grunt.registerTask('nuget',   ['clean:tmp', 'default', 'copy:nuget', 'template:nuspec', 'nugetpack', 'clean:tmp']);
-  grunt.registerTask('umbraco', ['clean:tmp', 'default', 'copy:umbraco', 'umbracoPackage', 'clean:tmp']);
+  grunt.registerTask('nuget',   ['clean:tmp', 'default', 'copy:nuget', 'template:nuspec', 'nugetpack']);
+  grunt.registerTask('umbraco', ['clean:tmp', 'default', 'copy:umbraco', 'umbracoPackage']);
   grunt.registerTask('package', ['clean:tmp', 'default', 'copy:nuget', 'template:nuspec', 'nugetpack', 'copy:umbraco', 'umbracoPackage', 'clean:tmp']);
 };
