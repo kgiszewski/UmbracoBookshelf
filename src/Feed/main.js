@@ -2,14 +2,14 @@
     "gitHub" : [
         {
             "title": "Official Umbraco Documentation",
-            "gitHubUser":"umbraco",
-            "gitHubRepo":"Umbraco4Docs",
+            "user":"umbraco",
+            "repo":"Umbraco4Docs",
             "branch":"master"
         },
         {
             "title": "Learn Umbraco 7",
-            "gitHubUser":"kgiszewski",
-            "gitHubRepo":"LearnUmbraco7",
+            "user":"kgiszewski",
+            "repo":"LearnUmbraco7",
             "branch":"master"
         }
     ]
