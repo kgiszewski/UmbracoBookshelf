@@ -184,6 +184,7 @@
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Controllers\UmbracoBookshelfApiController.cs" />
     <Compile Include="Applications\UmbracoBookshelfApplication.cs" />
+    <Compile Include="Models\DeletePathModel.cs" />
     <Compile Include="Models\FileSaveModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\UmbracoBookshelfTreeController.cs" />
@@ -197,9 +198,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Plugins\UmbracoBookshelf\backoffice\Dashboards\library.html" />
+    <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\delete.html" />
     <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\file.html" />
     <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\folder.html" />
+    <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\create.html" />
     <Content Include="App_Plugins\UmbracoBookshelf\css\application.css" />
+    <Content Include="App_Plugins\UmbracoBookshelf\js\create.controller.js" />
+    <Content Include="App_Plugins\UmbracoBookshelf\js\delete.controller.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\directives.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\file.controller.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\folder.controller.js" />

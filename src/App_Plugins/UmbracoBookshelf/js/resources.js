@@ -14,6 +14,11 @@
             return umbRequestHelper.resourcePromise(
                 $http.get("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/downloadurl/?url=" + encodeURIComponent(downloadUrl)), 'Failed to download url'
             );
+        },
+        getBookFeed: function() {
+            return umbRequestHelper.resourcePromise(
+                $http.get("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/getbookfeed/"), 'Failed to get book feed'
+            );
         }
     }
 });

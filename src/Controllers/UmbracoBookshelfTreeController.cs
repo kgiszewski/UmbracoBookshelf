@@ -33,6 +33,8 @@ namespace UmbracoBookshelf.Controllers
             var menu = new MenuItemCollection();
             //menu.DefaultMenuAlias = ActionNew.Instance.Alias;
             //menu.Items.Add<ActionNew>("Create");
+            menu.Items.Add<ActionDelete>("Delete");
+            //menu.Items.Add<ActionMove>("Move");
             return menu;
         }
 

@@ -2,7 +2,8 @@
 
     $scope.model = {};
     $scope.isDownloading = false;
-    $scope.model.downloadUrl = "https://github.com/umbraco/Umbraco4Docs/archive/master.zip";
+    $scope.model.downloadUrl = "";
+    $scope.model.feed = {};
 
     $scope.downloadUrl = function () {
         $scope.isDownloading = true;
@@ -12,4 +13,17 @@
             window.location.reload();
         });
     }
+
+    $scope.populateDownloader = function (url) {
+        console.log(url);
+        $scope.model.downloadUrl = url;
+    }
+
+    function init() {
+        umbracoBookshelfResource.getBookFeed().then(function(data) {
+            $scope.model.feed = data;
+        });
+    }
+
+    init();
 });

@@ -1,12 +1,18 @@
 ﻿<div ng-controller="UmbracoBookshelfLibraryController" class="bookshelf-library">
-    <h1>Download items to your Bookshelf</h1>
-    <p>Be sure to only use trusted resources.</p>
+    <h1>Download items to your bookshelf</h1>
+    <p>Be sure to only use trusted resources.  Checks are made to only allow markdown and media files to be placed on your system.</p>
 
     <div class="form-group">
         <input class="downloadUrl" type="text" ng-model="model.downloadUrl" />
         <button class="btn btn-success" ng-click="downloadUrl()" ng-disabled="isDownloading">Download</button>
         <div>
             <em>Ex. https://github.com/umbraco/Umbraco4Docs/archive/master.zip </em>
+        </div>
+        <div>
+            <h3>Popular</h3>
+            <ol>
+                <li ng-repeat="item in model.feed.popular"><a prevent-default href="#" ng-click="populateDownloader(item.url)">{{item.title}}</a></li>
+            </ol>
         </div>
     </div>
 </div>

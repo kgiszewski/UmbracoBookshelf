@@ -15,6 +15,9 @@ using System.Text.RegularExpressions;
 using ClientDependency.Core;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json.Linq;
+using umbraco.cms.businesslogic.packager;
+using umbraco.presentation.umbraco;
 using Umbraco.Core;
 using Umbraco.Core.Configuration.UmbracoSettings;
 using Umbraco.Core.Logging;
@@ -48,9 +51,14 @@ namespace UmbracoBookshelf.Controllers
         {
             var systemFilePath = IOHelper.MapPath(WebUtility.UrlDecode(Helpers.Constants.ROOT_DIRECTORY + dirPath));
 
-            var readme = Directory.GetFiles(systemFilePath).FirstOrDefault(x => Path.GetFileName(x) == Helpers.Constants.FOLDER_FILE);
+            var readme = "";
 
-            if (readme == null)
+            try
+            {
+               readme = Directory.GetFiles(systemFilePath)
+                    .FirstOrDefault(x => Path.GetFileName(x) == Helpers.Constants.FOLDER_FILE);
+            }
+            catch (Exception ex)
             {
                 return new
                 {
@@ -81,6 +89,30 @@ namespace UmbracoBookshelf.Controllers
             return new
             {
                 Status = "Saved"
+            };
+        }
+
+        [HttpPost]
+        public object Delete(DeletePathModel model)
+        {
+            LogHelper.Info<DeletePathModel>(model.Path);
+
+            var systemPath = IOHelper.MapPath("~" + Helpers.Constants.ROOT_DIRECTORY + "/" + model.Path);
+
+            var isDirectory = File.GetAttributes(systemPath).HasFlag(FileAttributes.Directory);
+
+            if (isDirectory)
+            {
+                Directory.Delete(systemPath, true);
+            }
+            else
+            {
+                File.Delete(systemPath);
+            }
+
+            return new
+            {
+                Status = "Deleted."
             };
         }
 
@@ -142,10 +174,25 @@ namespace UmbracoBookshelf.Controllers
         [HttpGet]
         public object GetBookFeed()
         {
-            return null;
+            var request = WebRequest.Create(Helpers.Constants.FEED_URL);
+
+            var response = request.GetResponse();
+
+            var dataStream = response.GetResponseStream();
+
+            var reader = new StreamReader(dataStream);
+
+            var responseFromServer = reader.ReadToEnd();
+
+            LogHelper.Info<JToken>(responseFromServer);
+
+            reader.Close();
+            response.Close();
+
+            return JObject.Parse(responseFromServer);
         }
 
-        public void ExtractZipFile(string archiveFilenameIn, string outFolder, string password = "")
+        private void ExtractZipFile(string archiveFilenameIn, string outFolder, string password = "")
         {
             ZipFile zf = null;
             try
