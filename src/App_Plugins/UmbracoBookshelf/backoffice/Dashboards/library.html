@@ -14,7 +14,8 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Title</th>
+                <th class="title">Title</th>
+                <th class="updatedOn">Updated On</th>
                 <th>Author(s)</th>
                 <th>Project URL</th>
             </tr>
@@ -23,6 +24,7 @@
                 <td>
                     <a prevent-default href="#" ng-click="populateDownloader(item)">{{item.title}}</a>
                 </td>
+                <td>{{getUpdatedOn(item)}}</td>
                 <td>{{getBookItemAuthors(item)}}</td>
                 <td><a href="{{getProjectUrl(item)}}" target="_blank">{{getProjectUrl(item)}}</a></td>
             </tr>

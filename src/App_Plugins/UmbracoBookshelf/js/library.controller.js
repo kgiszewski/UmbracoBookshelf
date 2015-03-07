@@ -19,14 +19,27 @@
     }
 
     $scope.getBookItemAuthors = function (feedItem) {
-        var authors = [];
 
-        angular.forEach(feedItem.authors, function (author) {
-            authors.push(author.login);
-        });
+        if (feedItem.authors) {
+            var authors = [];
 
-        return authors.join(', ');
+            angular.forEach(feedItem.authors, function(author) {
+                authors.push(author.login);
+            });
+
+            return authors.join(', ');
+        }
+
+        return "Loading...";
     }
+
+    $scope.getUpdatedOn = function(item) {
+        if (item.details) {
+            return item.details.updated_at.replace('T', ' ');
+        }
+
+        return "Checking...";
+    };
 
     $scope.getProjectUrl = function (feedItem) {
         return "https://github.com/" + feedItem.user + "/" + feedItem.repo;
@@ -39,6 +52,12 @@
             angular.forEach($scope.model.feed.gitHub, function(feedItem) {
                 umbracoBookshelfResource.getContributors(feedItem).then(function(contributors) {
                     feedItem.authors = contributors;
+                });
+            });
+        }).then(function() {
+            angular.forEach($scope.model.feed.gitHub, function (feedItem) {
+                umbracoBookshelfResource.getRepoDetails(feedItem).then(function (details) {
+                    feedItem.details = details;
                 });
             });
         });

@@ -24,6 +24,11 @@
             return umbRequestHelper.resourcePromise(
                 $http.get("https://api.github.com/repos/" + feedItem.user + "/" + feedItem.repo + "/contributors"), 'Failed to get contributors'
             );
+        },
+        getRepoDetails: function (feedItem) {
+            return umbRequestHelper.resourcePromise(
+                $http.get("https://api.github.com/repos/" + feedItem.user + "/" + feedItem.repo ), 'Failed to get repo details'
+            );
         }
     }
 });
