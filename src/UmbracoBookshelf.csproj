@@ -201,9 +201,7 @@
     <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\delete.html" />
     <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\file.html" />
     <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\folder.html" />
-    <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\create.html" />
     <Content Include="App_Plugins\UmbracoBookshelf\css\application.css" />
-    <Content Include="App_Plugins\UmbracoBookshelf\js\create.controller.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\delete.controller.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\directives.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\file.controller.js" />
