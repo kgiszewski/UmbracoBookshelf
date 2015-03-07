@@ -1,5 +1,5 @@
 ﻿{
-    "popular" : [
+    "gitHub" : [
         {
             "title": "Official Umbraco Documentation",
             "gitHubUser":"umbraco",
