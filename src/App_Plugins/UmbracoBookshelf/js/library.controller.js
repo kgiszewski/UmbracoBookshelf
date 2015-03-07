@@ -15,7 +15,6 @@
     }
 
     $scope.populateDownloader = function (url) {
-        console.log(url);
         $scope.model.downloadUrl = url;
     }
 

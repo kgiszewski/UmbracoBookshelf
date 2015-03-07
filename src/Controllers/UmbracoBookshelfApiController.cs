@@ -30,48 +30,64 @@ namespace UmbracoBookshelf.Controllers
     {
         public object GetFileContents(string filePath)
         {
-            var systemFilePath = IOHelper.MapPath(WebUtility.UrlDecode(Helpers.Constants.ROOT_DIRECTORY + filePath));
-
-            var extension = Path.GetExtension(systemFilePath);
-
-            if (!extension.EndsWith(Helpers.Constants.ALLOWED_FILE_EXTENSION))
-            {
-                throw new WebException("Invalid file type");
-            }
-
-            var content = File.ReadAllText(systemFilePath);
-
-            return new
-            {
-                Content = content
-            };
-        }
-
-        public object GetFolderContents(string dirPath)
-        {
-            var systemFilePath = IOHelper.MapPath(WebUtility.UrlDecode(Helpers.Constants.ROOT_DIRECTORY + dirPath));
-
-            var readme = "";
-
             try
             {
-               readme = Directory.GetFiles(systemFilePath)
-                    .FirstOrDefault(x => Path.GetFileName(x) == Helpers.Constants.FOLDER_FILE);
+                var systemFilePath = IOHelper.MapPath(WebUtility.UrlDecode(Helpers.Constants.ROOT_DIRECTORY + filePath));
+
+                var extension = Path.GetExtension(systemFilePath);
+
+                if (!extension.EndsWith(Helpers.Constants.ALLOWED_FILE_EXTENSION))
+                {
+                    throw new WebException("Invalid file type");
+                }
+
+                var content = File.ReadAllText(systemFilePath);
+
+                return new
+                {
+                    Content = content
+                };
             }
             catch (Exception ex)
             {
+                LogHelper.Error<Exception>(ex.Message, ex);
+
                 return new
                 {
                     Content = ""
                 };
             }
+        }
 
-            var content = File.ReadAllText(readme);
+        public object GetFolderContents(string dirPath)
+        {
+            var systemFilePath = "";
 
-            return new
+            var readme = "";
+
+            try
             {
-                Content = content
-            };
+               systemFilePath = IOHelper.MapPath(WebUtility.UrlDecode(Helpers.Constants.ROOT_DIRECTORY + dirPath));
+
+               readme = Directory.GetFiles(systemFilePath)
+                    .FirstOrDefault(x => Path.GetFileName(x) == Helpers.Constants.FOLDER_FILE);
+
+               var content = File.ReadAllText(readme);
+
+               return new
+               {
+                   Content = content
+               };
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error<Exception>(ex.Message, ex);
+
+                return new
+                {
+                    Content = ""
+                };
+            }
         }
 
         [HttpPost]

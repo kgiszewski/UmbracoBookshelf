@@ -193,7 +193,7 @@
     <None Include="app.config" />
     <None Include="App_Plugins\UmbracoBookshelf\package.manifest" />
     <None Include="Assets\less\application.less" />
-    <None Include="InitialContent\UmbracoBookshelf\Umbraco Bookshelf\README.md" />
+    <None Include="InitialContent\UmbracoBookshelf\Umbraco Bookshelf Documentation\README.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -211,7 +211,7 @@
     <Content Include="App_Plugins\UmbracoBookshelf\js\resources.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\services.js" />
     <Content Include="Feed\main.js" />
-    <Content Include="InitialContent\UmbracoBookshelf\Umbraco Bookshelf\assets\budget.jpg" />
+    <Content Include="InitialContent\UmbracoBookshelf\Umbraco Bookshelf Documentation\assets\budget.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
