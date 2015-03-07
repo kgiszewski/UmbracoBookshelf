@@ -19,6 +19,11 @@
             return umbRequestHelper.resourcePromise(
                 $http.get("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/getbookfeed/"), 'Failed to get book feed'
             );
+        },
+        getContributors: function (feedItem) {
+            return umbRequestHelper.resourcePromise(
+                $http.get("https://api.github.com/repos/" + feedItem.user + "/" + feedItem.repo + "/contributors"), 'Failed to get contributors'
+            );
         }
     }
 });

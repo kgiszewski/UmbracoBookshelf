@@ -11,11 +11,21 @@
     </div>
     <div>
         <h3>Popular Books on GitHub</h3>
-        <ol>
-            <li ng-repeat="item in model.feed.popular"><a prevent-default href="#" ng-click="populateDownloader(item.url)">{{item.title}}</a> by {{item.author}}</li>
-        </ol>
-        <p>
-            You may install local files via the Umbraco Package Install if they are in the Umbraco package format.
-        </p>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author(s)</th>
+                <th>Project URL</th>
+            </tr>
+            </thead>
+            <tr ng-repeat="item in model.feed.gitHub">
+                <td>
+                    <a prevent-default href="#" ng-click="populateDownloader(item)">{{item.title}}</a>
+                </td>
+                <td>{{getBookItemAuthors(item)}}</td>
+                <td><a href="{{getProjectUrl(item)}}" target="_blank">{{getProjectUrl(item)}}</a></td>
+            </tr>
+        </table>
     </div>
 </div>
