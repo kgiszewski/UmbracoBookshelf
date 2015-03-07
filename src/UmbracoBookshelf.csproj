@@ -189,20 +189,25 @@
     <Compile Include="Controllers\UmbracoBookshelfTreeController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="App_Plugins\UmbracoBookshelf\package.manifest" />
+    <None Include="Assets\less\application.less" />
     <None Include="InitialContent\UmbracoBookshelf\Umbraco Bookshelf\README.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Plugins\UmbracoBookshelf\backoffice\Dashboards\library.html" />
     <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\file.html" />
     <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\folder.html" />
     <Content Include="App_Plugins\UmbracoBookshelf\css\application.css" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\directives.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\file.controller.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\folder.controller.js" />
+    <Content Include="App_Plugins\UmbracoBookshelf\js\library.controller.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\marked.min.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\resources.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\services.js" />
+    <Content Include="Feed\main.js" />
     <Content Include="InitialContent\UmbracoBookshelf\Umbraco Bookshelf\assets\budget.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
