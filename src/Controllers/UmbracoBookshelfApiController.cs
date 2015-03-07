@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using ClientDependency.Core;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
+using Umbraco.Core;
 using Umbraco.Core.Configuration.UmbracoSettings;
 using Umbraco.Core.Logging;
 using UmbracoBookshelf.Models;
@@ -107,11 +108,15 @@ namespace UmbracoBookshelf.Controllers
                 var bookNameCamelCased = Path.GetFileName(firstDirectoryPath);
                 var bookName = unCamelCase(bookNameCamelCased).Replace("-master", "");
                 var renamedDirectory = firstDirectoryPath.Replace(bookNameCamelCased, "") + bookName;
-                var finalDestination = IOHelper.MapPath("~" + Helpers.Constants.ROOT_DIRECTORY + "/" + bookName);
+
+                var finalDestination = string.Format("{0}/{1} ({2})", IOHelper.MapPath("~" + Helpers.Constants.ROOT_DIRECTORY), bookName, DateTime.Now.ToString("yyyy-MM-dd"));
 
                 Directory.Move(unzippedDirectoryPath + bookNameCamelCased, renamedDirectory);
 
-                Directory.Delete(finalDestination, true);
+                if (Directory.Exists(finalDestination))
+                {
+                    Directory.Delete(finalDestination, true);
+                }
 
                 Directory.Move(renamedDirectory, finalDestination);
 
@@ -161,6 +166,14 @@ namespace UmbracoBookshelf.Controllers
                     }
 
                     var entryFileName = zipEntry.Name;
+
+                    var whiteListedExtensions = new List<string>() {".md", ".jpg", ".png", ".gif", ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".csv"};
+
+                    if (!whiteListedExtensions.Any(x => entryFileName.EndsWith(x)))
+                    {
+                        continue;
+                    }
+
                     // to remove the folder from the entry:- entryFileName = Path.GetFileName(entryFileName);
                     // Optionally match entrynames against a selection list here to skip as desired.
                     // The unpacked length is available in the zipEntry.Size property.
