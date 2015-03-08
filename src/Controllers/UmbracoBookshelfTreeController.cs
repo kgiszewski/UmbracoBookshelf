@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Formatting;
-using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
+using System.Web.Configuration;
 using umbraco.BusinessLogic.Actions;
 using Umbraco.Core.Logging;
 using Umbraco.Core.IO;
@@ -20,7 +20,11 @@ namespace UmbracoBookshelf.Controllers
     {
         protected override string FilePath
         {
-            get { return "~" + Helpers.Constants.ROOT_DIRECTORY; }
+            get
+            {
+                var customFolder = ConfigurationManager.AppSettings["UmbracoBookshelf:customFolder"];
+                return (string.IsNullOrEmpty(customFolder) ? "~" + Helpers.Constants.ROOT_DIRECTORY : customFolder);
+            }
         }
 
         protected override string FileSearchPattern
@@ -31,14 +35,39 @@ namespace UmbracoBookshelf.Controllers
         protected override MenuItemCollection GetMenuForNode(string id, FormDataCollection queryStrings)
         {
             var menu = new MenuItemCollection();
-            //menu.DefaultMenuAlias = ActionNew.Instance.Alias;
-            //menu.Items.Add<ActionNew>("Create");
+
             menu.Items.Add<ActionDelete>("Delete");
-            //menu.Items.Add<ActionMove>("Move");
+
             return menu;
         }
 
         protected override TreeNodeCollection GetTreeNodes(string id, FormDataCollection queryStrings)
+        {
+            var nodes = new TreeNodeCollection();
+
+            nodes.AddRange(getNodes(id, queryStrings));
+
+            return nodes;
+        }
+
+        private string getWebPath(string mappedPath)
+        {
+            var urlRoot = new Uri(IOHelper.MapPath("~") + "/");
+            var path = urlRoot.MakeRelativeUri(new Uri(mappedPath)).ToString();        
+
+            //normal filesystem placement
+            path = path.Replace(".." + Helpers.Constants.ROOT_DIRECTORY , "");
+
+            //fixup virtual relative paths
+            path = path.Replace("/..", "").Replace("..","");
+
+            //both virtual and normal
+            path = path.Replace("/", "%2F");
+
+            return path;
+        }
+
+        private TreeNodeCollection getNodes(string id, FormDataCollection queryStrings)
         {
             var orgPath = "";
             var path = "";
@@ -68,7 +97,7 @@ namespace UmbracoBookshelf.Controllers
                     var node = CreateTreeNode(orgPath + dir.Name, orgPath, queryStrings, dir.Name, "icon-folder", hasChildren);
 
                     node.RoutePath = "/UmbracoBookshelf/UmbracoBookshelfTree/folder/" + getWebPath(dir.FullName);
-                   
+
                     if (node != null)
                         nodes.Add(node);
                 }
@@ -105,13 +134,6 @@ namespace UmbracoBookshelf.Controllers
             }
 
             return nodes;
-        }
-
-        private string getWebPath(string mappedPath)
-        {
-            var urlRoot = new Uri(IOHelper.MapPath("~") + "/");
-            var path = urlRoot.MakeRelativeUri(new Uri(mappedPath)).ToString().Replace("/", "%2F").Substring(FilePath.Length + 3);
-            return path;
         }
     }
 }

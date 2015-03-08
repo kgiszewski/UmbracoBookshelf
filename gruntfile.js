@@ -54,7 +54,7 @@ module.exports = function(grunt) {
         expand: true
       },
       dll: {
-        cwd: 'src/bin/debug/',
+        cwd: 'src/bin/',
         src: 'UmbracoBookshelf.dll',
         dest: '<%= dest %>/bin/',
         expand: true
