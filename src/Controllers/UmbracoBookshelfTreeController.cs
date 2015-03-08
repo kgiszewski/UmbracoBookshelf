@@ -63,8 +63,24 @@ namespace UmbracoBookshelf.Controllers
 
         private string getWebPath(string mappedPath)
         {
+            LogHelper.Info<TreeController>("mp=>" + mappedPath);
+
             var urlRoot = new Uri(IOHelper.MapPath("~") + "/");
-            var path = urlRoot.MakeRelativeUri(new Uri(mappedPath)).ToString().Replace("/", "%2F").Substring(FilePath.Length + 3);
+            var path = urlRoot.MakeRelativeUri(new Uri(mappedPath)).ToString();
+            
+            LogHelper.Info<TreeController>("R URI=>" +path);
+
+            //normal filesystem placement
+            path = path.Replace(".." + Helpers.Constants.ROOT_DIRECTORY , "");
+
+            //fixup virtual relative paths
+            path = path.Replace("/..", "").Replace("..","");
+
+            //both virtual and normal
+            path = path.Replace("/", "%2F");
+
+            LogHelper.Info<TreeController>("computed path=>" + path);
+
             return path;
         }
 
@@ -101,6 +117,8 @@ namespace UmbracoBookshelf.Controllers
 
             var dirInfo = new DirectoryInfo(path);
             var dirInfos = dirInfo.GetDirectories();
+
+            LogHelper.Info<TreeNodeCollection>("# Dirs=>" + dirInfos.Count());
 
             var nodes = new TreeNodeCollection();
 
