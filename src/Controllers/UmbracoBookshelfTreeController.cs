@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Formatting;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
+using System.Web.Configuration;
 using umbraco.BusinessLogic.Actions;
 using Umbraco.Core.Logging;
 using Umbraco.Core.IO;
 using Umbraco.Web.Models.Trees;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.Trees;
-using Microsoft.Web.Administration;
-using Microsoft.Web.Management;
 
 namespace UmbracoBookshelf.Controllers
 {
@@ -23,7 +20,11 @@ namespace UmbracoBookshelf.Controllers
     {
         protected override string FilePath
         {
-            get { return "~" + Helpers.Constants.ROOT_DIRECTORY; }
+            get
+            {
+                //TODO: make this configurable via web.config; need to change project type unfortunately
+                return "~" + Helpers.Constants.ROOT_DIRECTORY;
+            }
         }
 
         protected override string FileSearchPattern
@@ -34,41 +35,25 @@ namespace UmbracoBookshelf.Controllers
         protected override MenuItemCollection GetMenuForNode(string id, FormDataCollection queryStrings)
         {
             var menu = new MenuItemCollection();
-            //menu.DefaultMenuAlias = ActionNew.Instance.Alias;
-            //menu.Items.Add<ActionNew>("Create");
+
             menu.Items.Add<ActionDelete>("Delete");
-            //menu.Items.Add<ActionMove>("Move");
+
             return menu;
         }
 
         protected override TreeNodeCollection GetTreeNodes(string id, FormDataCollection queryStrings)
         {
             var nodes = new TreeNodeCollection();
-            try
-            {
-                nodes.AddRange(getNodes(id, queryStrings, FilePath));
 
-                foreach (var vdir in GetVirtualDirectories())
-                {
-                    nodes.AddRange(getNodes(id, queryStrings, vdir.Path));
-                }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error<Exception>(ex.Message, ex);
-            }
+            nodes.AddRange(getNodes(id, queryStrings));
 
             return nodes;
         }
 
         private string getWebPath(string mappedPath)
         {
-            LogHelper.Info<TreeController>("mp=>" + mappedPath);
-
             var urlRoot = new Uri(IOHelper.MapPath("~") + "/");
-            var path = urlRoot.MakeRelativeUri(new Uri(mappedPath)).ToString();
-            
-            LogHelper.Info<TreeController>("R URI=>" +path);
+            var path = urlRoot.MakeRelativeUri(new Uri(mappedPath)).ToString();        
 
             //normal filesystem placement
             path = path.Replace(".." + Helpers.Constants.ROOT_DIRECTORY , "");
@@ -79,46 +64,27 @@ namespace UmbracoBookshelf.Controllers
             //both virtual and normal
             path = path.Replace("/", "%2F");
 
-            LogHelper.Info<TreeController>("computed path=>" + path);
-
             return path;
         }
 
-        public IEnumerable<VirtualDirectory> GetVirtualDirectories()
+        private TreeNodeCollection getNodes(string id, FormDataCollection queryStrings)
         {
-            var manager = new ServerManager();
-            var defaultSite = manager.Sites["mendozaapp.local"];
-
-            return
-                defaultSite.Applications.First()
-                    .VirtualDirectories.Where(x => x.Path.Contains("UmbracoBookshelf"));
-        }
-
-        private TreeNodeCollection getNodes(string id, FormDataCollection queryStrings, string file_path)
-        {
-            LogHelper.Info<TreeNodeCollection>(file_path);
-
             var orgPath = "";
             var path = "";
-            var _filePath = file_path;
 
             if (!string.IsNullOrEmpty(id) && id != "-1")
             {
                 orgPath = id;
-                path = IOHelper.MapPath(_filePath + "/" + orgPath);
+                path = IOHelper.MapPath(FilePath + "/" + orgPath);
                 orgPath += "/";
             }
             else
             {
-                path = IOHelper.MapPath(_filePath);
+                path = IOHelper.MapPath(FilePath);
             }
-
-            LogHelper.Info<TreeNodeCollection>("Mapped=>" + path);
 
             var dirInfo = new DirectoryInfo(path);
             var dirInfos = dirInfo.GetDirectories();
-
-            LogHelper.Info<TreeNodeCollection>("# Dirs=>" + dirInfos.Count());
 
             var nodes = new TreeNodeCollection();
 
