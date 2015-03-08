@@ -200,8 +200,6 @@ namespace UmbracoBookshelf.Controllers
 
             var responseFromServer = reader.ReadToEnd();
 
-            LogHelper.Info<JToken>(responseFromServer);
-
             reader.Close();
             response.Close();
 
