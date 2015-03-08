@@ -22,8 +22,8 @@ namespace UmbracoBookshelf.Controllers
         {
             get
             {
-                //TODO: make this configurable via web.config; need to change project type unfortunately
-                return "~" + Helpers.Constants.ROOT_DIRECTORY;
+                var customFolder = ConfigurationManager.AppSettings["UmbracoBookshelf:customFolder"];
+                return (string.IsNullOrEmpty(customFolder) ? "~" + Helpers.Constants.ROOT_DIRECTORY : customFolder);
             }
         }
 
