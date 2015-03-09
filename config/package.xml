@@ -27,17 +27,6 @@
   <DataTypes />
   <control />
   <Actions>
-	<Action runat="install" undo="true" alias="AddLanguageFileKey" language="en" position="beginning" area="sections" key="UmbracoBookshelf" value="Umbraco Bookshelf" />
-	<Action runat="install" alias="addDashboardSection" dashboardAlias="UmbracoBookshelfSection">
-	 <section alias="UmbracoBookshelfSection">
-		<areas>
-		  <area>UmbracoBookshelf</area>
-		</areas>
-		<tab caption="Library">
-		  <control>/app_plugins/umbracobookshelf/backoffice/dashboards/library.html</control>
-		</tab>
-	  </section>
-	</Action>
   </Actions>
   <files>
   	<% files.forEach(function(file) { %>
