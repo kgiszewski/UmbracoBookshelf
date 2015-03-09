@@ -20,11 +20,7 @@ namespace UmbracoBookshelf.Controllers
     {
         protected override string FilePath
         {
-            get
-            {
-                var customFolder = ConfigurationManager.AppSettings["UmbracoBookshelf:customFolder"];
-                return (string.IsNullOrEmpty(customFolder) ? "~" + Helpers.Constants.ROOT_DIRECTORY : customFolder);
-            }
+            get { return Helpers.Constants.ROOT_DIRECTORY; }
         }
 
         protected override string FileSearchPattern

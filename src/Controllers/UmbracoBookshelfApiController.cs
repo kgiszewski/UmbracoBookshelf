@@ -32,7 +32,7 @@ namespace UmbracoBookshelf.Controllers
         {
             try
             {
-                var systemFilePath = IOHelper.MapPath(WebUtility.UrlDecode(Helpers.Constants.ROOT_DIRECTORY + filePath));
+                var systemFilePath = getSystemPath(filePath);
 
                 var extension = Path.GetExtension(systemFilePath);
 
@@ -67,7 +67,7 @@ namespace UmbracoBookshelf.Controllers
 
             try
             {
-               systemFilePath = IOHelper.MapPath(WebUtility.UrlDecode(Helpers.Constants.ROOT_DIRECTORY + dirPath));
+                systemFilePath = getSystemPath(dirPath);
 
                readme = Directory.GetFiles(systemFilePath)
                     .FirstOrDefault(x => Path.GetFileName(x) == Helpers.Constants.FOLDER_FILE);
@@ -93,7 +93,7 @@ namespace UmbracoBookshelf.Controllers
         [HttpPost]
         public object SaveFile(FileSaveModel model)
         {
-            var systemFilePath = IOHelper.MapPath("~" + Helpers.Constants.ROOT_DIRECTORY + model.FilePath);
+            var systemFilePath = getSystemPath(model.FilePath);
 
             if(!systemFilePath.EndsWith(Helpers.Constants.ALLOWED_FILE_EXTENSION))
             {
@@ -111,9 +111,9 @@ namespace UmbracoBookshelf.Controllers
         [HttpPost]
         public object Delete(DeletePathModel model)
         {
-            LogHelper.Info<DeletePathModel>(model.Path);
+            LogHelper.Info<UmbracoBookshelfTreeController>("trying to kill:" + model.Path);
 
-            var systemPath = IOHelper.MapPath("~" + Helpers.Constants.ROOT_DIRECTORY + "/" + model.Path);
+            var systemPath = getSystemPath("/" + model.Path, 1);
 
             var isDirectory = File.GetAttributes(systemPath).HasFlag(FileAttributes.Directory);
 
@@ -270,6 +270,13 @@ namespace UmbracoBookshelf.Controllers
         private String unCamelCase(String str)
         {
            return Regex.Replace( Regex.Replace( str, @"(\P{Ll})(\P{Ll}\p{Ll})", "$1 $2" ), @"(\p{Ll})(\P{Ll})", "$1 $2" );
+        }
+
+        private string getSystemPath(string filePath, int skip = 2)
+        {
+            var filePathSections = WebUtility.UrlDecode(filePath).Split('/');
+
+            return IOHelper.MapPath(Helpers.Constants.ROOT_DIRECTORY + "/" + string.Join("/", filePathSections.Skip(skip)));
         }
     }
 } 

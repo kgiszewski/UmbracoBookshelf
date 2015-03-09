@@ -1,22 +1,30 @@
-﻿angular.module('umbraco.directives').directive('umbracoBookshelfMarkedUp', function ($location) {
+﻿angular.module('umbraco.directives').directive('umbracoBookshelfMarkedUp', function ($location, $routeParams) {
 
-    function getRelativePath() {
-        var relativePath = "";
+    //not sure why, but the urls are double encoded
+    var url = decodeURIComponent($location.url());
+    var isViewingFile = (url.indexOf('/file/') != -1);
+    var pathToFileUrl = "/umbraco/#/UmbracoBookshelf/UmbracoBookshelfTree/file/";
+    var pathToFolderUrl = "/umbraco/#/UmbracoBookshelf/UmbracoBookshelfTree/folder/";
+    var pathToReader = (isViewingFile) ? pathToFileUrl : pathToFolderUrl;
+    var pathOnFileSystem = decodeURIComponent($routeParams.id);
+    var pathOnFileSystemSections = pathOnFileSystem.split('/');
 
-        var url = (decodeURIComponent($location.url()));
+    function getCurrentRelativePath() {
+        var relativePathSections = [];
 
-        var indexOfFile = url.indexOf('/file/');
+        var size = (isViewingFile) ? 2 : 1;
 
-        if (indexOfFile != -1) {
-            relativePath = decodeURIComponent(url.substr(indexOfFile + 6));
-
-            relativePath = relativePath.substring(0, relativePath.lastIndexOf("/")) + "/";
-        } else {
-            var indexOfFolder = url.indexOf('/folder/');
-            relativePath = decodeURIComponent(url.substr(indexOfFolder + 8)) + "/";
+        for (var i = 1; i <= pathOnFileSystemSections.length - size; i++) {
+            relativePathSections.push(pathOnFileSystemSections[i]);
         }
 
-        return "/UmbracoBookshelf" + relativePath;
+        var relativePath = relativePathSections.join('/');
+
+        return "/" + relativePath + "/";
+    }
+
+    function getRootRelativePath() {
+        return "/" + pathOnFileSystemSections[1] + "/" + pathOnFileSystemSections[2];
     }
 
     function isRelative($element, attribute) {
@@ -27,37 +35,46 @@
         return $element.attr(attribute).indexOf('http') == 0;
     }
 
-    function cleanForwardSlashes(input) {
-        return input.replace(/\%2f/gi, '%252F');
-    }
-
     var linker = function (scope, element, attrs) {
         scope.$watch('model.content', function (newValue, oldValue) {
             if (newValue) {
                 var markup = element.html(marked(newValue));
-                var relativePath = getRelativePath();
 
                 /* adding global rule for external links */
                 markup.find('a').each(function () {
                     var $a = $(this);
+                    var relativePath = "";
 
                     if (isExternal($a, 'href')) {
                         $a.attr('target', '_blank');
                     } else {
                         if (isRelative($a, 'href')) {
-                            if ($a.attr('href').indexOf('/') != 0) {
-                                $a.attr('href', "/umbraco/#/UmbracoBookshelf/UmbracoBookshelfTree/file/" + cleanForwardSlashes(encodeURIComponent(relativePath.replace(/\/UmbracoBookshelf/g, '') + $a.attr('href'))));
-                            }
+                            //is relative to current
+                            relativePath = getCurrentRelativePath();
+                        } else {
+                            //is relative to root
+                            relativePath = getRootRelativePath();
                         }
+
+                        var pathToLinkedFile = ($a.attr('href').indexOf(".md") != -1) ? pathToFileUrl : pathToFolderUrl;
+
+                        $a.attr('href', pathToLinkedFile + encodeURIComponent(encodeURIComponent(relativePath + $a.attr('href'))));
                     }
                 });
 
                 /* fixup image relative paths */
                 markup.find('img').each(function () {
                     var $img = $(this);
+                    var relativePath = "";
+
                     if (isRelative($img, 'src')) {
-                        $img.attr('src', relativePath + $img.attr('src'));
+                        //is relative to current
+                        relativePath = getCurrentRelativePath();
+                    } else {
+                        //is relative to root
+                        relativePath = getRootRelativePath();
                     }
+                    $img.attr('src', relativePath + $img.attr('src'));
                 });
             }
         }, true);
