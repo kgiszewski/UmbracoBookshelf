@@ -1,5 +1,4 @@
 #Welcome!#
-*Version 0.1*
 
 Thanks for downloading Umbraco Bookshelf!  Bookshelf will allow users to create, display and share Umbraco learning resources quickly.
 
