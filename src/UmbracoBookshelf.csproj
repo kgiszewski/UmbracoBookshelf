@@ -113,6 +113,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PackageActionsContrib">
+      <HintPath>..\packages\UmbracoBookshelf.0.4.1\lib\net40\PackageActionsContrib.dll</HintPath>
+    </Reference>
     <Reference Include="SQLCE4Umbraco, Version=1.0.5529.18524, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\UmbracoCms.Core.7.2.2\lib\SQLCE4Umbraco.dll</HintPath>
@@ -223,6 +226,7 @@
     <Content Include="Assets\less\application.less" />
     <Content Include="InitialContent\UmbracoBookshelf\Umbraco Bookshelf Documentation\README.md" />
     <Content Include="packages.config" />
+    <Content Include="UmbracoBookshelf\Umbraco Bookshelf Documentation\README.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
