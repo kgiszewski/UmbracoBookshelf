@@ -157,7 +157,7 @@ namespace UmbracoBookshelf.Controllers
                 var bookName = unCamelCase(bookNameCamelCased).Replace("-master", "");
                 var renamedDirectory = firstDirectoryPath.Replace(bookNameCamelCased, "") + bookName;
 
-                var finalDestination = string.Format("{0}/{1} ({2})", IOHelper.MapPath("~" + Helpers.Constants.ROOT_DIRECTORY), bookName, DateTime.Now.ToString("yyyy-MM-dd"));
+                var finalDestination = string.Format("{0}/{1} ({2})", IOHelper.MapPath(Helpers.Constants.ROOT_DIRECTORY), bookName, DateTime.Now.ToString("yyyy-MM-dd"));
 
                 Directory.Move(unzippedDirectoryPath + bookNameCamelCased, renamedDirectory);
 
