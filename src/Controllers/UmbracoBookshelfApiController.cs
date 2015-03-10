@@ -1,25 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
-using umbraco.presentation.plugins.tinymce3;
 using Umbraco.Core.IO;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
 using System.IO;
-using System.IO.Compression;
 using System.Net;
 using System.Text.RegularExpressions;
-using ClientDependency.Core;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
-using umbraco.cms.businesslogic.packager;
-using umbraco.presentation.umbraco;
-using Umbraco.Core;
-using Umbraco.Core.Configuration.UmbracoSettings;
 using Umbraco.Core.Logging;
 using UmbracoBookshelf.Models;
 
@@ -69,15 +60,11 @@ namespace UmbracoBookshelf.Controllers
 
         public object GetFolderContents(string dirPath)
         {
-            var systemFilePath = "";
-
-            var readme = "";
-
             try
             {
-                systemFilePath = getSystemPath(dirPath);
+                var systemFilePath = getSystemPath(dirPath);
 
-               readme = Directory.GetFiles(systemFilePath)
+               var readme = Directory.GetFiles(systemFilePath)
                     .FirstOrDefault(x => Path.GetFileName(x) == Helpers.Constants.FOLDER_FILE);
 
                var content = File.ReadAllText(readme);

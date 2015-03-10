@@ -53,7 +53,11 @@
 
                     if (isExternal($a, 'href')) {
                         $a.attr('target', '_blank');
-                    } else {
+                    }
+                    else if (href.indexOf("/umbraco/#/UmbracoBookshelf") == 0) {
+                        //allow as-is
+                    }
+                    else {
                         if (isRelative($a, 'href')) {
                             //is relative to current
                             relativePath = getCurrentRelativePath(isViewingFile, pathOnFileSystemSections);
@@ -67,6 +71,7 @@
                         //test for media downloads
                         if (inArray(scope.config.mediaExtensions, "." + extension)) {
                             $a.attr('href', relativePath + href);
+                            $a.attr('target', '_blank');
                         } else {
                             var pathToLinkedFileOrFolder = (extension.indexOf("/") == -1) ? pathToFileUrl : pathToFolderUrl;
 
