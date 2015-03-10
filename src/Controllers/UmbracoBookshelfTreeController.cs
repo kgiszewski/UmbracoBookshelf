@@ -33,6 +33,7 @@ namespace UmbracoBookshelf.Controllers
             var menu = new MenuItemCollection();
 
             menu.Items.Add<ActionDelete>("Delete");
+            menu.Items.Add<ActionRefresh>("Reload Nodes");
 
             return menu;
         }
