@@ -1,15 +1,6 @@
 ﻿angular.module('umbraco.directives').directive('umbracoBookshelfMarkedUp', function ($location, $routeParams) {
 
-    //not sure why, but the urls are double encoded
-    var url = decodeURIComponent($location.url());
-    var isViewingFile = (url.indexOf('/file/') != -1);
-    var pathToFileUrl = "/umbraco/#/UmbracoBookshelf/UmbracoBookshelfTree/file/";
-    var pathToFolderUrl = "/umbraco/#/UmbracoBookshelf/UmbracoBookshelfTree/folder/";
-    var pathToReader = (isViewingFile) ? pathToFileUrl : pathToFolderUrl;
-    var pathOnFileSystem = decodeURIComponent($routeParams.id);
-    var pathOnFileSystemSections = pathOnFileSystem.split('/');
-
-    function getCurrentRelativePath() {
+    function getCurrentRelativePath(isViewingFile, pathOnFileSystemSections) {
         var relativePathSections = [];
 
         var size = (isViewingFile) ? 2 : 1;
@@ -23,8 +14,13 @@
         return "/" + relativePath + "/";
     }
 
-    function getRootRelativePath() {
+    function getRootRelativePath(pathOnFileSystemSections) {
         return "/" + pathOnFileSystemSections[1] + "/" + pathOnFileSystemSections[2];
+    }
+
+    function inArray(array, item) {
+        var foundItem = _.find(array, function (arrayItem) { return arrayItem == item; });
+        return (foundItem != undefined);
     }
 
     function isRelative($element, attribute) {
@@ -37,12 +33,22 @@
 
     var linker = function (scope, element, attrs) {
         scope.$watch('model.content', function (newValue, oldValue) {
+
+            //not sure why, but the urls are double encoded
+            var url = decodeURIComponent($location.url());
+            var isViewingFile = (url.indexOf('/file/') != -1);
+            var pathToFileUrl = "/umbraco/#/UmbracoBookshelf/UmbracoBookshelfTree/file/";
+            var pathToFolderUrl = "/umbraco/#/UmbracoBookshelf/UmbracoBookshelfTree/folder/";
+            var pathOnFileSystem = decodeURIComponent($routeParams.id);
+            var pathOnFileSystemSections = pathOnFileSystem.split('/');
+
             if (newValue) {
                 var markup = element.html(marked(newValue));
 
-                /* adding global rule for external links */
+                /* handle links */
                 markup.find('a').each(function () {
                     var $a = $(this);
+                    var href = $a.attr('href');
                     var relativePath = "";
 
                     if (isExternal($a, 'href')) {
@@ -50,15 +56,22 @@
                     } else {
                         if (isRelative($a, 'href')) {
                             //is relative to current
-                            relativePath = getCurrentRelativePath();
+                            relativePath = getCurrentRelativePath(isViewingFile, pathOnFileSystemSections);
                         } else {
                             //is relative to root
-                            relativePath = getRootRelativePath();
+                            relativePath = getRootRelativePath(pathOnFileSystemSections);
                         }
 
-                        var pathToLinkedFile = ($a.attr('href').indexOf(".md") != -1) ? pathToFileUrl : pathToFolderUrl;
+                        var extension = href.split('.').pop();
 
-                        $a.attr('href', pathToLinkedFile + encodeURIComponent(encodeURIComponent(relativePath + $a.attr('href'))));
+                        //test for media downloads
+                        if (inArray(scope.config.mediaExtensions, "." + extension)) {
+                            $a.attr('href', relativePath + href);
+                        } else {
+                            var pathToLinkedFileOrFolder = (extension.indexOf("/") == -1) ? pathToFileUrl : pathToFolderUrl;
+
+                            $a.attr('href', pathToLinkedFileOrFolder + encodeURIComponent(encodeURIComponent(relativePath + href)));
+                        }
                     }
                 });
 
@@ -69,10 +82,10 @@
 
                     if (isRelative($img, 'src')) {
                         //is relative to current
-                        relativePath = getCurrentRelativePath();
+                        relativePath = getCurrentRelativePath(isViewingFile, pathOnFileSystemSections);
                     } else {
                         //is relative to root
-                        relativePath = getRootRelativePath();
+                        relativePath = getRootRelativePath(pathOnFileSystemSections);
                     }
                     $img.attr('src', relativePath + $img.attr('src'));
                 });

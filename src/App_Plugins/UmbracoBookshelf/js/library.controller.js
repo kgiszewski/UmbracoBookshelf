@@ -35,7 +35,7 @@
 
     $scope.getUpdatedOn = function(item) {
         if (item.details) {
-            return item.details.updated_at.replace('T', ' ');
+            return item.details.pushed_at.replace('T', ' ');
         }
 
         return "Checking...";

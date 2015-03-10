@@ -9,9 +9,16 @@ namespace UmbracoBookshelf.Helpers
 {
     public class Constants
     {
-        public static string ROOT_DIRECTORY = ConfigurationManager.AppSettings["UmbracoBookshelf:customFolder"] ?? "~/UmbracoBookshelf";
-        public const string ALLOWED_FILE_EXTENSION = ".md";
+        public static string ROOT_DIRECTORY = ConfigurationManager.AppSettings["UmbracoBookshelf:customFolder"] ??
+                                              "~/UmbracoBookshelf";
+
+        public const string MARKDOWN_FILE_EXTENSION = ".md";
+
+        public static List<string> MEDIA_FILE_EXTENSIONS =
+            new List<string>() {".jpg", ".png", ".gif", ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".csv"};
+
         public const string FOLDER_FILE = "README.md";
+
         public const string FEED_URL = "https://raw.githubusercontent.com/kgiszewski/UmbracoBookshelf/master/src/Feed/main.js";
     }
 }

@@ -5,9 +5,14 @@
     $scope.isEditing = false;
     $scope.isSaving = false;
     $scope.model.content = "";
+    $scope.config = {};
 
-    umbracoBookshelfResource.getFileContents($scope.model.filePath).then(function (data) {
-        $scope.model.content = data.Content;
+    umbracoBookshelfResource.getConfig().then(function(data) {
+        $scope.config = data;
+    }).then(function() {
+        umbracoBookshelfResource.getFileContents($scope.model.filePath).then(function(data) {
+            $scope.model.content = data.Content;
+        });
     });
 
     $scope.toggleEdit = function() {

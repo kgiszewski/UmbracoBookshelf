@@ -25,7 +25,7 @@ namespace UmbracoBookshelf.Controllers
 
         protected override string FileSearchPattern
         {
-            get { return "*" + Helpers.Constants.ALLOWED_FILE_EXTENSION; }
+            get { return "*" + Helpers.Constants.MARKDOWN_FILE_EXTENSION; }
         }
 
         protected override MenuItemCollection GetMenuForNode(string id, FormDataCollection queryStrings)
@@ -86,7 +86,7 @@ namespace UmbracoBookshelf.Controllers
 
             foreach (var dir in dirInfos)
             {
-                var hasChildren = dir.GetFiles().Any(x => x.Name.EndsWith(Helpers.Constants.ALLOWED_FILE_EXTENSION)) || dir.GetDirectories().Length > 0;
+                var hasChildren = dir.GetFiles().Any(x => x.Name.EndsWith(Helpers.Constants.MARKDOWN_FILE_EXTENSION)) || dir.GetDirectories().Length > 0;
 
                 if (hasChildren && (dir.Attributes & FileAttributes.Hidden) == 0)
                 {

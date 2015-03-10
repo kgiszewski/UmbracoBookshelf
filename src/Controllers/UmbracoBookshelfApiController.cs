@@ -28,6 +28,14 @@ namespace UmbracoBookshelf.Controllers
     [PluginController("UmbracoBookshelfApi")]
     public class UmbracoBookshelfController : UmbracoAuthorizedJsonController
     {
+        public object GetConfig()
+        {
+            return new
+            {
+                mediaExtensions = Helpers.Constants.MEDIA_FILE_EXTENSIONS
+            };
+        }
+
         public object GetFileContents(string filePath)
         {
             try
@@ -36,7 +44,7 @@ namespace UmbracoBookshelf.Controllers
 
                 var extension = Path.GetExtension(systemFilePath);
 
-                if (!extension.EndsWith(Helpers.Constants.ALLOWED_FILE_EXTENSION))
+                if (!extension.EndsWith(Helpers.Constants.MARKDOWN_FILE_EXTENSION))
                 {
                     throw new WebException("Invalid file type");
                 }
@@ -95,7 +103,7 @@ namespace UmbracoBookshelf.Controllers
         {
             var systemFilePath = getSystemPath(model.FilePath);
 
-            if(!systemFilePath.EndsWith(Helpers.Constants.ALLOWED_FILE_EXTENSION))
+            if(!systemFilePath.EndsWith(Helpers.Constants.MARKDOWN_FILE_EXTENSION))
             {
                 throw new WebException("Invalid file type");
             }
@@ -228,7 +236,8 @@ namespace UmbracoBookshelf.Controllers
 
                     var entryFileName = zipEntry.Name;
 
-                    var whiteListedExtensions = new List<string>() {".md", ".jpg", ".png", ".gif", ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".csv"};
+                    var whiteListedExtensions = new List<string>() { Helpers.Constants.MARKDOWN_FILE_EXTENSION };
+                    whiteListedExtensions.AddRange(Helpers.Constants.MEDIA_FILE_EXTENSIONS);
 
                     if (!whiteListedExtensions.Any(x => entryFileName.EndsWith(x)))
                     {

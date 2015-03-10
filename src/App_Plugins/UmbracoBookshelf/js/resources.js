@@ -29,6 +29,11 @@
             return umbRequestHelper.resourcePromise(
                 $http.get("https://api.github.com/repos/" + feedItem.user + "/" + feedItem.repo ), 'Failed to get repo details'
             );
+        },
+        getConfig: function () {
+            return umbRequestHelper.resourcePromise(
+                $http.get("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/getconfig/"), 'Failed to get config'
+            );
         }
     }
 });
