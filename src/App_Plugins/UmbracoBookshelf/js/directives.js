@@ -80,7 +80,7 @@
                         var extension = href.split('.').pop();
 
                         //test for media downloads
-                        if (inArray(scope.config.mediaExtensions, "." + extension)) {
+                        if (inArray(scope.config.fileExtensions, "." + extension)) {
                             $a.attr('href', relativePath + href);
                             $a.attr('target', '_blank');
                         } else {
