@@ -300,6 +300,7 @@ namespace UmbracoBookshelf.Controllers
         {
             //prevent relative system path
             filePath = filePath.Replace("../", "");
+            filePath = filePath.Replace(":", "");
 
             var filePathSections = WebUtility.UrlDecode(filePath).Split('/');
 

@@ -1,4 +1,4 @@
-﻿angular.module('umbraco').controller('UmbracoBookshelfDeleteController', function ($scope, navigationService, umbracoBookshelfService) {
+﻿angular.module('umbraco').controller('UmbracoBookshelfDeleteController', function ($scope, navigationService, treeService, umbracoBookshelfService) {
 
     $scope.performDelete = function () {
 
@@ -8,7 +8,8 @@
         umbracoBookshelfService.delete($scope.currentNode.id).then(function (data) {
             $scope.currentNode.loading = false;
 
-            window.location.reload();
+            treeService.removeNode($scope.currentNode);
+            navigationService.hideDialog();
         });
     };
 

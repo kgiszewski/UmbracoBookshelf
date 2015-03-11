@@ -1,4 +1,4 @@
-﻿angular.module('umbraco').controller('UmbracoBookshelfCreateController', function ($scope, $routeParams, navigationService, umbracoBookshelfService) {
+﻿angular.module('umbraco').controller('UmbracoBookshelfCreateController', function ($scope, $routeParams, navigationService, $timeout, treeService, umbracoBookshelfService) {
 
     $scope.model = {};
     $scope.model.name = "";
@@ -12,6 +12,7 @@
             umbracoBookshelfService.createFile("/" + $scope.currentNode.id + "/" + $scope.model.name).then(function(data) {
                 $scope.isCreating = false;
 
+                treeService.loadNodeChildren({ node: $scope.currentNode, section: $scope.section });
                 navigationService.hideNavigation();
             });
         }
@@ -19,6 +20,7 @@
             umbracoBookshelfService.createFolder("/" + $scope.currentNode.id + "/" + $scope.model.name).then(function (data) {
                 $scope.isCreating = false;
 
+                treeService.loadNodeChildren({ node: $scope.currentNode, section: $scope.section });
                 navigationService.hideNavigation();
             });
         }
