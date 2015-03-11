@@ -258,9 +258,11 @@
   <ItemGroup>
     <Compile Include="Applications\UmbracoBookshelfApplication.cs" />
     <Compile Include="Controllers\UmbracoBookshelfApiController.cs" />
+    <Compile Include="Controllers\UmbracoBookshelfPublicApiController.cs" />
     <Compile Include="Controllers\UmbracoBookshelfTreeController.cs" />
     <Compile Include="Events\PackageActions.cs" />
     <Compile Include="Helpers\Constants.cs" />
+    <Compile Include="Helpers\FileSystemHelper.cs" />
     <Compile Include="Models\CreateFileModel.cs" />
     <Compile Include="Models\CreateFolderModel.cs" />
     <Compile Include="Models\DeletePathModel.cs" />

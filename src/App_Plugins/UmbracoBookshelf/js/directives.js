@@ -31,6 +31,16 @@
         return $element.attr(attribute).indexOf('http') == 0;
     }
 
+    function removeQueryString(input) {
+        var qMarkIndex = input.indexOf('?');
+
+        if (qMarkIndex == -1) {
+            return input;
+        }
+
+        return input.substring(0, qMarkIndex);
+    }
+
     var linker = function (scope, element, attrs) {
         scope.$watch('model.content', function (newValue, oldValue) {
 
@@ -39,6 +49,7 @@
             var isViewingFile = (url.indexOf('/file/') != -1);
             var pathToFileUrl = "/umbraco/#/UmbracoBookshelf/UmbracoBookshelfTree/file/";
             var pathToFolderUrl = "/umbraco/#/UmbracoBookshelf/UmbracoBookshelfTree/folder/";
+            var pathToMediaUrl = "/umbraco/umbracobookshelfapi/umbracobookshelfpublic/getmedia/?filePath=";
             var pathOnFileSystem = decodeURIComponent($routeParams.id);
             var pathOnFileSystemSections = pathOnFileSystem.split('/');
 
@@ -92,7 +103,7 @@
                         //is relative to root
                         relativePath = getRootRelativePath(pathOnFileSystemSections);
                     }
-                    $img.attr('src', relativePath + $img.attr('src'));
+                    $img.attr('src', pathToMediaUrl + relativePath + removeQueryString($img.attr('src')));
                 });
             }
         }, true);

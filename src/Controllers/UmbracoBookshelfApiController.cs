@@ -13,6 +13,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
 using Umbraco.Core.Logging;
 using UmbracoBookshelf.Models;
+using UmbracoBookshelf.Helpers;
 
 namespace UmbracoBookshelf.Controllers
 {
@@ -31,7 +32,7 @@ namespace UmbracoBookshelf.Controllers
         {
             try
             {
-                var systemFilePath = getSystemPath(filePath);
+                var systemFilePath = filePath.ToSystemPath();
 
                 var extension = Path.GetExtension(systemFilePath);
 
@@ -62,7 +63,7 @@ namespace UmbracoBookshelf.Controllers
         {
             try
             {
-                var systemFilePath = getSystemPath(dirPath);
+                var systemFilePath = dirPath.ToSystemPath();
 
                var readme = Directory.GetFiles(systemFilePath)
                     .FirstOrDefault(x => Path.GetFileName(x) == Helpers.Constants.FOLDER_FILE);
@@ -88,7 +89,7 @@ namespace UmbracoBookshelf.Controllers
         [HttpPost]
         public object SaveFile(FileSaveModel model)
         {
-            var systemFilePath = getSystemPath(model.FilePath);
+            var systemFilePath = model.FilePath.ToSystemPath();
 
             if(!systemFilePath.EndsWith(Helpers.Constants.MARKDOWN_FILE_EXTENSION))
             {
@@ -106,7 +107,7 @@ namespace UmbracoBookshelf.Controllers
         [HttpPost]
         public object Delete(DeletePathModel model)
         {
-            var systemPath = getSystemPath("/" + model.Path, 1);
+            var systemPath = ("/" + model.Path).ToSystemPath(1);
 
             var isDirectory = File.GetAttributes(systemPath).HasFlag(FileAttributes.Directory);
 
@@ -128,7 +129,7 @@ namespace UmbracoBookshelf.Controllers
         [HttpPost]
         public object CreateFile(CreateFileModel model)
         {            
-            var systemPath = getSystemPath(model.FilePath, 1);
+            var systemPath = model.FilePath.ToSystemPath(1);
 
             File.WriteAllText(systemPath + ".md", @"#Overview#");
 
@@ -141,8 +142,8 @@ namespace UmbracoBookshelf.Controllers
         [HttpPost]
         public object Rename(RenameModel model)
         {
-            var systemPath = getSystemPath(model.SourcePath, 0);
-            model.NewName = makeSafe(model.NewName).Replace("\\", "");
+            var systemPath = model.SourcePath.ToSystemPath(0);
+            model.NewName = model.NewName.MakeSafe().Replace("\\", "");
 
             var newSystemPath = Path.GetDirectoryName(systemPath) + "\\" + model.NewName;
 
@@ -162,7 +163,7 @@ namespace UmbracoBookshelf.Controllers
         [HttpPost]
         public object CreateFolder(CreateFolderModel model)
         {      
-            var systemPath = getSystemPath(model.Path, 1);
+            var systemPath = model.Path.ToSystemPath(1);
 
             //create directory
             Directory.CreateDirectory(systemPath);
@@ -315,20 +316,6 @@ namespace UmbracoBookshelf.Controllers
         private String unCamelCase(String str)
         {
            return Regex.Replace( Regex.Replace( str, @"(\P{Ll})(\P{Ll}\p{Ll})", "$1 $2" ), @"(\p{Ll})(\P{Ll})", "$1 $2" );
-        }
-
-        private string getSystemPath(string filePath, int skip = 2)
-        {
-            //prevent relative system path
-
-            var filePathSections = makeSafe(WebUtility.UrlDecode(filePath)).Split('/');
-
-            return IOHelper.MapPath(Helpers.Constants.ROOT_DIRECTORY + "/" + string.Join("/", filePathSections.Skip(skip)));
-        }
-
-        private string makeSafe(string input)
-        {
-            return input.Replace("../", "").Replace("..\\", "").Replace(":", "").Replace(@"\\", @"\");
         }
     }
 } 
