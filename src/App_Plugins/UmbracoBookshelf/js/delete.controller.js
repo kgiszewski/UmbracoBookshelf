@@ -1,4 +1,4 @@
-﻿angular.module('umbraco').controller('UmbracoBookshelfDeleteController', function ($scope, $http, $routeParams, navigationService, umbracoBookshelfService) {
+﻿angular.module('umbraco').controller('UmbracoBookshelfDeleteController', function ($scope, navigationService, umbracoBookshelfService) {
 
     $scope.performDelete = function () {
 

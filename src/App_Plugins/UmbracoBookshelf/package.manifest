@@ -4,6 +4,7 @@
         "~/App_Plugins/UmbracoBookshelf/js/file.controller.js",
         "~/App_Plugins/UmbracoBookshelf/js/folder.controller.js",
         "~/App_Plugins/UmbracoBookshelf/js/delete.controller.js",
+        "~/App_Plugins/UmbracoBookshelf/js/create.controller.js",
         "~/App_Plugins/UmbracoBookshelf/js/resources.js",
         "~/App_Plugins/UmbracoBookshelf/js/services.js",
         "~/App_Plugins/UmbracoBookshelf/js/directives.js",

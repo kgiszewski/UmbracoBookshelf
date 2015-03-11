@@ -9,6 +9,16 @@
             return umbRequestHelper.resourcePromise(
                 $http.post("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/delete/", { path: path }), 'Failed to delete path'
             );
+        },
+        createFile: function (path) {
+            return umbRequestHelper.resourcePromise(
+                $http.post("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/createFile/", { filePath: path }), 'Failed to create file'
+            );
+        },
+        createFolder: function (path) {
+            return umbRequestHelper.resourcePromise(
+                $http.post("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/createFolder/", { path: path }), 'Failed to create file'
+            );
         }
     }
 });

@@ -222,6 +222,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\create.html" />
+    <Content Include="App_Plugins\UmbracoBookshelf\js\create.controller.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\package.manifest" />
     <Content Include="Assets\less\application.less" />
     <Content Include="InitialContent\UmbracoBookshelf\Umbraco Bookshelf Documentation\README.md" />
@@ -257,6 +259,8 @@
     <Compile Include="Controllers\UmbracoBookshelfTreeController.cs" />
     <Compile Include="Events\PackageActions.cs" />
     <Compile Include="Helpers\Constants.cs" />
+    <Compile Include="Models\CreateFileModel.cs" />
+    <Compile Include="Models\CreateFolderModel.cs" />
     <Compile Include="Models\DeletePathModel.cs" />
     <Compile Include="Models\FileSaveModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

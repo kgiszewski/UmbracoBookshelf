@@ -8,6 +8,7 @@ using System.Web.Configuration;
 using umbraco.BusinessLogic.Actions;
 using Umbraco.Core.Logging;
 using Umbraco.Core.IO;
+using Umbraco.Web.Media.EmbedProviders.Settings;
 using Umbraco.Web.Models.Trees;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.Trees;
@@ -31,6 +32,11 @@ namespace UmbracoBookshelf.Controllers
         protected override MenuItemCollection GetMenuForNode(string id, FormDataCollection queryStrings)
         {
             var menu = new MenuItemCollection();
+
+            if (!id.EndsWith(Helpers.Constants.MARKDOWN_FILE_EXTENSION))
+            {
+                menu.Items.Add<ActionNew>("Create");
+            }
 
             menu.Items.Add<ActionDelete>("Delete");
             menu.Items.Add<ActionRefresh>("Reload Nodes");

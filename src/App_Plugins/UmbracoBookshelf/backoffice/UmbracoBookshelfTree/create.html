@@ -1,0 +1,26 @@
+﻿<div class="umb-dialog umb-pane bookshelf-create" ng-controller="UmbracoBookshelfCreateController">
+    <div class="umb-dialog-body" auto-scale="90">
+
+        <div class="form-group">
+            <label>
+                Name
+                <input type="text" ng-model="model.name"/>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>
+                <input type="checkbox" ng-model="model.isFolder"/> Create folder?
+            </label>
+        </div>
+
+        <small ng-hide="model.isFolder">Enter a file name without any extension then click create.</small>
+        <small ng-show="model.isFolder">Enter a folder name then click create.</small>
+
+        <div class="umb-dialog-footer btn-toolbar umb-btn-toolbar">
+            <button class="btn btn-success" ng-click="create()" ng-disabled="!model.name || isCreating">
+                <localize key="create">Create</localize>
+            </button>
+        </div>
+    </div>
+</div>

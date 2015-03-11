@@ -106,8 +106,6 @@ namespace UmbracoBookshelf.Controllers
         [HttpPost]
         public object Delete(DeletePathModel model)
         {
-            LogHelper.Info<UmbracoBookshelfTreeController>("trying to kill:" + model.Path);
-
             var systemPath = getSystemPath("/" + model.Path, 1);
 
             var isDirectory = File.GetAttributes(systemPath).HasFlag(FileAttributes.Directory);
@@ -127,12 +125,42 @@ namespace UmbracoBookshelf.Controllers
             };
         }
 
+        [HttpPost]
+        public object CreateFile(CreateFileModel model)
+        {            
+            var systemPath = getSystemPath(model.FilePath, 1);
+
+            File.WriteAllText(systemPath + ".md", @"#Overview#");
+
+            return new
+            {
+                Status = "Created."
+            };
+        }
+
+        [HttpPost]
+        public object CreateFolder(CreateFolderModel model)
+        {      
+            var systemPath = getSystemPath(model.Path, 1);
+
+            //create directory
+            Directory.CreateDirectory(systemPath);
+
+            //add file
+            File.WriteAllText(systemPath + "/README.md", @"#Overview#");
+
+            return new
+            {
+                Status = "Created."
+            };
+        }
+
         [HttpGet]
         public object DownloadUrl(string url)
         {
             try
             {
-                var downloadsDirectory = IOHelper.MapPath(@"c:/temp/UmbracoBookshelf/" + DateTime.Now.Ticks + "/");
+                var downloadsDirectory = IOHelper.MapPath(Path.GetTempPath() + DateTime.Now.Ticks + "/");
                 var fileName = Path.GetFileName(url);
 
                 Directory.CreateDirectory(Path.GetDirectoryName(downloadsDirectory));
@@ -270,6 +298,9 @@ namespace UmbracoBookshelf.Controllers
 
         private string getSystemPath(string filePath, int skip = 2)
         {
+            //prevent relative system path
+            filePath = filePath.Replace("../", "");
+
             var filePathSections = WebUtility.UrlDecode(filePath).Split('/');
 
             return IOHelper.MapPath(Helpers.Constants.ROOT_DIRECTORY + "/" + string.Join("/", filePathSections.Skip(skip)));
