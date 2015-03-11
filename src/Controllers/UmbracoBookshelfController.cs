@@ -24,7 +24,8 @@ namespace UmbracoBookshelf.Controllers
         {
             return new
             {
-                mediaExtensions = Helpers.Constants.MEDIA_FILE_EXTENSIONS
+                fileExtensions = Helpers.Constants.ALLOWED_FILE_EXTENSIONS,
+                imageExtensions = Helpers.Constants.ALLOWED_IMAGE_EXTENSIONS
             };
         }
 
@@ -274,7 +275,8 @@ namespace UmbracoBookshelf.Controllers
                     var entryFileName = zipEntry.Name;
 
                     var whiteListedExtensions = new List<string>() { Helpers.Constants.MARKDOWN_FILE_EXTENSION };
-                    whiteListedExtensions.AddRange(Helpers.Constants.MEDIA_FILE_EXTENSIONS);
+                    whiteListedExtensions.AddRange(Helpers.Constants.ALLOWED_FILE_EXTENSIONS);
+                    whiteListedExtensions.AddRange(Helpers.Constants.ALLOWED_IMAGE_EXTENSIONS);
 
                     if (!whiteListedExtensions.Any(x => entryFileName.EndsWith(x)))
                     {

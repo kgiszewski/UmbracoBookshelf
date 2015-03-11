@@ -257,8 +257,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Applications\UmbracoBookshelfApplication.cs" />
-    <Compile Include="Controllers\UmbracoBookshelfApiController.cs" />
-    <Compile Include="Controllers\UmbracoBookshelfPublicApiController.cs" />
+    <Compile Include="Controllers\UmbracoBookshelfController.cs" />
+    <Compile Include="Controllers\UmbracoBookshelfMediaController.cs" />
     <Compile Include="Controllers\UmbracoBookshelfTreeController.cs" />
     <Compile Include="Events\PackageActions.cs" />
     <Compile Include="Helpers\Constants.cs" />

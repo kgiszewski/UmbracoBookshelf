@@ -49,7 +49,7 @@
             var isViewingFile = (url.indexOf('/file/') != -1);
             var pathToFileUrl = "/umbraco/#/UmbracoBookshelf/UmbracoBookshelfTree/file/";
             var pathToFolderUrl = "/umbraco/#/UmbracoBookshelf/UmbracoBookshelfTree/folder/";
-            var pathToMediaUrl = "/umbraco/umbracobookshelfapi/umbracobookshelfpublic/getmedia/?filePath=";
+            var pathToMediaUrl = "/umbraco/umbracobookshelfapi/umbracobookshelfmedia/getmedia/?filePath=";
             var pathOnFileSystem = decodeURIComponent($routeParams.id);
             var pathOnFileSystemSections = pathOnFileSystem.split('/');
 

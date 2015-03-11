@@ -14,8 +14,11 @@ namespace UmbracoBookshelf.Helpers
 
         public const string MARKDOWN_FILE_EXTENSION = ".md";
 
-        public static List<string> MEDIA_FILE_EXTENSIONS =
-            new List<string>() {".jpg", ".png", ".gif", ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".csv"};
+        public static List<string> ALLOWED_FILE_EXTENSIONS =
+            new List<string>() { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".csv"};
+
+        public static List<string> ALLOWED_IMAGE_EXTENSIONS =
+            new List<string>() { ".jpg", ".png", ".gif" };
 
         public const string FOLDER_FILE = "README.md";
 
