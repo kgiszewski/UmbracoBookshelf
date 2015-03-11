@@ -1,0 +1,20 @@
+﻿<div class="umb-dialog umb-pane bookshelf-create" ng-controller="UmbracoBookshelfMoveController">
+    <div class="umb-dialog-body" auto-scale="90">
+
+        <div class="form-group">
+            <label>
+                Name
+                <input type="text" ng-model="model.name" />
+            </label>
+        </div>
+
+        <small ng-hide="model.isFolder">Enter a file name without any extension then click rename.</small>
+        <small ng-show="model.isFolder">Enter a folder name then click rename.</small>
+
+        <div class="umb-dialog-footer btn-toolbar umb-btn-toolbar">
+            <button class="btn btn-success" ng-click="rename()" ng-disabled="!model.name || isRenaming">
+                <localize key="rename">Rename</localize>
+            </button>
+        </div>
+    </div>
+</div>

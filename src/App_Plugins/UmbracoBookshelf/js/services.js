@@ -19,6 +19,11 @@
             return umbRequestHelper.resourcePromise(
                 $http.post("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/createFolder/", { path: path }), 'Failed to create file'
             );
+        },
+        rename: function (sourcePath, newName, isFolder) {
+            return umbRequestHelper.resourcePromise(
+                $http.post("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/rename/", { sourcePath: sourcePath, newName: newName, isFolder: isFolder }), 'Failed to create file'
+            );
         }
     }
 });

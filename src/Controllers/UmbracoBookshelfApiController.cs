@@ -139,6 +139,27 @@ namespace UmbracoBookshelf.Controllers
         }
 
         [HttpPost]
+        public object Rename(RenameModel model)
+        {
+            var systemPath = getSystemPath(model.SourcePath, 0);
+            model.NewName = makeSafe(model.NewName).Replace("\\", "");
+
+            var newSystemPath = Path.GetDirectoryName(systemPath) + "\\" + model.NewName;
+
+            if (!model.IsFolder)
+            {
+                newSystemPath += ".md";
+            }
+
+            Directory.Move(systemPath, newSystemPath);
+
+            return new
+            {
+                Status = "Renamed."
+            };
+        }
+
+        [HttpPost]
         public object CreateFolder(CreateFolderModel model)
         {      
             var systemPath = getSystemPath(model.Path, 1);
@@ -299,12 +320,15 @@ namespace UmbracoBookshelf.Controllers
         private string getSystemPath(string filePath, int skip = 2)
         {
             //prevent relative system path
-            filePath = filePath.Replace("../", "");
-            filePath = filePath.Replace(":", "");
 
-            var filePathSections = WebUtility.UrlDecode(filePath).Split('/');
+            var filePathSections = makeSafe(WebUtility.UrlDecode(filePath)).Split('/');
 
             return IOHelper.MapPath(Helpers.Constants.ROOT_DIRECTORY + "/" + string.Join("/", filePathSections.Skip(skip)));
+        }
+
+        private string makeSafe(string input)
+        {
+            return input.Replace("../", "").Replace("..\\", "").Replace(":", "").Replace(@"\\", @"\");
         }
     }
 } 

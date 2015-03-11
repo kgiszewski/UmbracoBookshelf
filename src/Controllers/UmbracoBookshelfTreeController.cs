@@ -36,10 +36,11 @@ namespace UmbracoBookshelf.Controllers
             if (!id.EndsWith(Helpers.Constants.MARKDOWN_FILE_EXTENSION))
             {
                 menu.Items.Add<ActionNew>("Create");
+                menu.Items.Add<ActionRefresh>("Reload Nodes");
             }
-
+            
+            menu.Items.Add<ActionMove>("Rename");
             menu.Items.Add<ActionDelete>("Delete");
-            menu.Items.Add<ActionRefresh>("Reload Nodes");
 
             return menu;
         }
