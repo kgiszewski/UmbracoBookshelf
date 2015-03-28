@@ -42,6 +42,13 @@
     }
 
     var linker = function (scope, element, attrs) {
+        marked.setOptions({
+            highlight: function (code) {
+                hljs.initHighlightingOnLoad();
+                return hljs.highlightAuto(code).value;
+            }
+        });
+
         scope.$watch('model.content', function (newValue, oldValue) {
 
             //not sure why, but the urls are double encoded

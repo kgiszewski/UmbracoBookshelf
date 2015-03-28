@@ -9,10 +9,12 @@
         "~/App_Plugins/UmbracoBookshelf/js/resources.js",
         "~/App_Plugins/UmbracoBookshelf/js/services.js",
         "~/App_Plugins/UmbracoBookshelf/js/directives.js",
-        "~/App_Plugins/UmbracoBookshelf/js/marked.min.js"
+        "~/App_Plugins/UmbracoBookshelf/js/marked.min.js",
+        "~/App_Plugins/UmbracoBookshelf/js/highlight.pack.js"
     ],
-  "css": [
-    "~/App_Plugins/UmbracoBookshelf/css/application.css"
-  ]
+    "css": [
+        "~/App_Plugins/UmbracoBookshelf/css/highlight.css",
+        "~/App_Plugins/UmbracoBookshelf/css/application.css"
+    ]
 }
 
