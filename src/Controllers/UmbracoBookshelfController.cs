@@ -129,7 +129,9 @@ namespace UmbracoBookshelf.Controllers
 
         [HttpPost]
         public object CreateFile(CreateFileModel model)
-        {            
+        {
+            model.FilePath = _ensureRootPath(model.FilePath);
+
             var systemPath = model.FilePath.ToSystemPath(1);
 
             File.WriteAllText(systemPath + ".md", @"#Overview#");
@@ -163,7 +165,9 @@ namespace UmbracoBookshelf.Controllers
 
         [HttpPost]
         public object CreateFolder(CreateFolderModel model)
-        {      
+        {
+            model.Path = _ensureRootPath(model.Path);
+
             var systemPath = model.Path.ToSystemPath(1);
 
             //create directory
@@ -200,7 +204,7 @@ namespace UmbracoBookshelf.Controllers
                 var firstDirectoryPath = Directory.GetDirectories(unzippedDirectoryPath).First();
 
                 var bookNameCamelCased = Path.GetFileName(firstDirectoryPath);
-                var bookName = unCamelCase(bookNameCamelCased).Replace("-master", "");
+                var bookName = _unCamelCase(bookNameCamelCased).Replace("-master", "");
                 var renamedDirectory = firstDirectoryPath.Replace(bookNameCamelCased, "") + bookName;
 
                 var finalDestination = string.Format("{0}/{1} ({2})", IOHelper.MapPath(Helpers.Constants.ROOT_DIRECTORY), bookName, DateTime.Now.ToString("yyyy-MM-dd"));
@@ -315,9 +319,19 @@ namespace UmbracoBookshelf.Controllers
             }
         }
 
-        private String unCamelCase(String str)
+        private string _unCamelCase(String str)
         {
            return Regex.Replace( Regex.Replace( str, @"(\P{Ll})(\P{Ll}\p{Ll})", "$1 $2" ), @"(\p{Ll})(\P{Ll})", "$1 $2" );
+        }
+
+        private string _ensureRootPath(string path)
+        {
+            if (path.StartsWith("/-1"))
+            {
+                return "/" + path.Substring(3);
+            }
+
+            return path;
         }
     }
 } 
