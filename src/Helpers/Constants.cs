@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UmbracoBookshelf.Helpers
 {
     public class Constants
     {
-        public static string ROOT_DIRECTORY = ConfigurationManager.AppSettings["UmbracoBookshelf:customFolder"] ??
-                                              "~/UmbracoBookshelf";
+        public static string ROOT_DIRECTORY = ConfigurationManager.AppSettings["UmbracoBookshelf:customFolder"] ?? "~/UmbracoBookshelf";
+
+        public static bool DISABLE_EDITING = Convert.ToBoolean(ConfigurationManager.AppSettings["UmbracoBookshelf:disableEditing"] ?? "false");
 
         public const string MARKDOWN_FILE_EXTENSION = ".md";
 

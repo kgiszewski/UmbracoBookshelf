@@ -28,16 +28,20 @@ namespace UmbracoBookshelf.Controllers
         {
             var menu = new MenuItemCollection();
 
-            if (!id.EndsWith(Helpers.Constants.MARKDOWN_FILE_EXTENSION))
+            if (!Helpers.Constants.DISABLE_EDITING)
             {
-                menu.Items.Add<ActionNew>("Create");
-                menu.Items.Add<ActionRefresh>("Reload Nodes");
-            }
 
-            if (id != "-1")
-            {
-                menu.Items.Add<ActionMove>("Rename");
-                menu.Items.Add<ActionDelete>("Delete");
+                if (!id.EndsWith(Helpers.Constants.MARKDOWN_FILE_EXTENSION))
+                {
+                    menu.Items.Add<ActionNew>("Create");
+                    menu.Items.Add<ActionRefresh>("Reload Nodes");
+                }
+
+                if (id != "-1")
+                {
+                    menu.Items.Add<ActionMove>("Rename");
+                    menu.Items.Add<ActionDelete>("Delete");
+                }
             }
 
             return menu;
