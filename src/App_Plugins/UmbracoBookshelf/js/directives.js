@@ -1,4 +1,4 @@
-﻿angular.module('umbraco.directives').directive('umbracoBookshelfMarkedUp', function ($location, $routeParams) {
+﻿angular.module('umbraco.directives').directive('umbracoBookshelfMarkedUp', function($location, $routeParams) {
 
     function getCurrentRelativePath(isViewingFile, pathOnFileSystemSections) {
         var relativePathSections = [];
@@ -19,7 +19,7 @@
     }
 
     function inArray(array, item) {
-        var foundItem = _.find(array, function (arrayItem) { return arrayItem == item; });
+        var foundItem = _.find(array, function(arrayItem) { return arrayItem == item; });
         return (foundItem != undefined);
     }
 
@@ -41,15 +41,15 @@
         return input.substring(0, qMarkIndex);
     }
 
-    var linker = function (scope, element, attrs) {
+    var linker = function(scope, element, attrs) {
         marked.setOptions({
-            highlight: function (code) {
+            highlight: function(code) {
                 hljs.initHighlightingOnLoad();
                 return hljs.highlightAuto(code).value;
             }
         });
 
-        scope.$watch('model.content', function (newValue, oldValue) {
+        scope.$watch('model.content', function(newValue, oldValue) {
 
             //not sure why, but the urls are double encoded
             var url = decodeURIComponent($location.url());
@@ -64,18 +64,16 @@
                 var markup = element.html(marked(newValue));
 
                 /* handle links */
-                markup.find('a').each(function () {
+                markup.find('a').each(function() {
                     var $a = $(this);
                     var href = $a.attr('href');
                     var relativePath = "";
 
                     if (isExternal($a, 'href')) {
                         $a.attr('target', '_blank');
-                    }
-                    else if (href.indexOf("/umbraco/#/UmbracoBookshelf") == 0) {
+                    } else if (href.indexOf("/umbraco/#/UmbracoBookshelf") == 0) {
                         //allow as-is
-                    }
-                    else {
+                    } else {
                         if (isRelative($a, 'href')) {
                             //is relative to current
                             relativePath = getCurrentRelativePath(isViewingFile, pathOnFileSystemSections);
@@ -99,7 +97,7 @@
                 });
 
                 /* fixup image relative paths */
-                markup.find('img').each(function () {
+                markup.find('img').each(function() {
                     var $img = $(this);
                     var relativePath = "";
 
@@ -120,4 +118,21 @@
         restrict: "A",
         link: linker
     }
-})
+}).directive('umbracoBookshelfCtrlS', function () {
+
+    var linker = function(scope, element, attrs) {
+        $(document).keydown(function (e) {
+            if ((e.which == '115' || e.which == '83') && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                scope.save();
+                return false;
+            }
+            return true;
+        });
+    }
+
+    return {
+        restrict: "E",
+        link: linker
+    }
+});
