@@ -17,6 +17,10 @@
 
     $scope.toggleEdit = function() {
         $scope.isEditing = !$scope.isEditing;
+
+        if (!$scope.isEditing) {
+            $scope.save();
+        }
     }
 
     $scope.save = function () {
