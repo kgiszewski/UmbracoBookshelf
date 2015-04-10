@@ -225,6 +225,7 @@
     <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\create.html" />
     <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\move.html" />
     <Content Include="App_Plugins\UmbracoBookshelf\css\highlight.css" />
+    <Content Include="App_Plugins\UmbracoBookshelf\js\autogrow.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\create.controller.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\highlight.pack.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\move.controller.js" />

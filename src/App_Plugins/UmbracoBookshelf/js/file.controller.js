@@ -8,6 +8,10 @@
     $scope.model.content = "";
     $scope.config = {};
 
+    function sendMdBroadcast(args) {
+        $scope.$broadcast("insertMd", args);
+    }
+
     umbracoBookshelfResource.getConfig().then(function(data) {
         $scope.config = data;
     }).then(function() {
@@ -41,4 +45,53 @@
             $scope.save();
         }
     });
+
+    $scope.insertHeadlineMd = function (number) {
+        var hashes = "";
+
+        for (var i = 0; i < number; i++) {
+            hashes += "#";
+        }
+
+        sendMdBroadcast({
+            md: hashes + "Lorem Ipsum" + hashes
+        });
+    }
+
+    $scope.insertImageMd = function () {
+        sendMdBroadcast({
+            md: "![alt text](url)"
+        });
+    }
+
+    $scope.insertLinkMd = function () {
+        sendMdBroadcast({
+            md: "[clickable](url)"
+        });
+    }
+
+    $scope.insertOlMd = function () {
+        sendMdBroadcast({
+            md: "1. foo\n2. bar\n"
+        });
+    }
+
+    $scope.insertUlMd = function () {
+        sendMdBroadcast({
+            md: "* foo\n* bar\n"
+        });
+    }
+
+    $scope.insertCodeMd = function (number) {
+        var hashes = "";
+
+        for (var i = 0; i < number; i++) {
+            hashes += "`";
+        }
+
+        sendMdBroadcast({
+            md: hashes + "\n<code>\n" + hashes
+        });
+    }
 });
+

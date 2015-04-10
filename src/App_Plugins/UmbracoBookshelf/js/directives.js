@@ -137,6 +137,27 @@
     }
 }).directive('autoGrow', function ($timeout) {
 
+    var insertAtCaret = function (element, text) {
+        text = text || '';
+        if (document.selection) {
+            // IE
+            element.focus();
+            var sel = document.selection.createRange();
+            sel.text = text;
+        } else if (element.selectionStart || element.selectionStart === 0) {
+            // Others
+            var startPos = element.selectionStart;
+            var endPos = element.selectionEnd;
+            element.value = element.value.substring(0, startPos) +
+              text +
+              element.value.substring(endPos, element.value.length);
+            element.selectionStart = startPos + text.length;
+            element.selectionEnd = startPos + text.length;
+        } else {
+            element.value += text;
+        }
+    };
+
     var linker = function (scope, element, attrs) {
         scope.$watch('isEditing', function (newValue, oldValue) {
             if (newValue) {
@@ -144,6 +165,10 @@
                     element.autogrow();
                 }, 100);
             }
+        });
+
+        scope.$on('insertMd', function (ev, args) {
+            insertAtCaret(element.get(0), args.md);
         });
     }
 
