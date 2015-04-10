@@ -41,6 +41,21 @@
         return input.substring(0, qMarkIndex);
     }
 
+    function unifyHeights() {
+        var maxHeight = 0;
+
+        $('#bookshelf-canvas').children('.span6').each(function () {
+
+            var height = $(this).outerHeight();
+
+            if (height > maxHeight) {
+                maxHeight = height;
+            }
+        });
+
+        $('#bookshelf-canvas .span6').css('height', maxHeight);
+    }
+
     var linker = function(scope, element, attrs) {
         marked.setOptions({
             highlight: function(code) {
@@ -49,7 +64,19 @@
             }
         });
 
-        scope.$watch('model.content', function(newValue, oldValue) {
+        scope.$watch('isEditing', function (newValue, oldValue) {
+
+            console.log(newValue);
+
+            if (newValue) {
+                unifyHeights();
+                return;
+            }
+        });
+
+        scope.$watch('model.content', function (newValue, oldValue) {
+
+            unifyHeights();
 
             //not sure why, but the urls are double encoded
             var url = decodeURIComponent($location.url());
@@ -118,10 +145,10 @@
         restrict: "A",
         link: linker
     }
-}).directive('umbracoBookshelfCtrlS', function () {
+}).directive('umbracoBookshelfCtrlS', function() {
 
     var linker = function(scope, element, attrs) {
-        $(document).keydown(function (e) {
+        $(document).keydown(function(e) {
             if ((e.which == '115' || e.which == '83') && (e.ctrlKey || e.metaKey)) {
                 e.preventDefault();
                 scope.save();

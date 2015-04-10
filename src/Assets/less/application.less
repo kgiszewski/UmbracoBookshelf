@@ -1,4 +1,4 @@
-﻿ .bookshelf-markup {
+﻿.bookshelf-markup {
     a {
         color: blue;
     }
@@ -8,6 +8,21 @@
             display: block;
             white-space: pre;
         }
+    }
+
+    &.span6 {
+        overflow: hidden;
+
+        img {
+            height: 10px;
+            border: 1px solid orange;
+            border-left: 10px solid orange;
+            border-right: 10px solid orange;
+        }        
+    }
+
+    &.span12 {
+        overflow: hidden;
     }
 }
 
