@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Formatting;
-using System.Configuration;
-using System.Web.Configuration;
 using umbraco.BusinessLogic.Actions;
-using Umbraco.Core.Logging;
 using Umbraco.Core.IO;
-using Umbraco.Web.Media.EmbedProviders.Settings;
 using Umbraco.Web.Models.Trees;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.Trees;
