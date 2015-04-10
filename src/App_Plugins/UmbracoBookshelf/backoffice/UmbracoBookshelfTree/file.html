@@ -9,7 +9,7 @@
             <umb-tab id="tab1" rel="content">
                 <div id="bookshelf-canvas" class="umb-pane row">
                     <div ng-show="isEditing" class="span6" style="padding-right: 20px;">
-                        <textarea ng-model="model.content" class="span12" style="height: 100%; margin-bottom: 10px;"></textarea>
+                        <textarea auto-grow ng-model="model.content" class="span12" style="height: 100%; margin-bottom: 10px;"></textarea>
 
                         <div class="text-right">
                             <button class="btn btn btn-default" ng-click="toggleEdit();">Hide Editor</button>

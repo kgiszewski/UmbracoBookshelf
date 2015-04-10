@@ -41,21 +41,6 @@
         return input.substring(0, qMarkIndex);
     }
 
-    function unifyHeights() {
-        var maxHeight = 0;
-
-        $('#bookshelf-canvas').children('.span6').each(function () {
-
-            var height = $(this).outerHeight();
-
-            if (height > maxHeight) {
-                maxHeight = height;
-            }
-        });
-
-        $('#bookshelf-canvas .span6').css('height', maxHeight);
-    }
-
     var linker = function(scope, element, attrs) {
         marked.setOptions({
             highlight: function(code) {
@@ -64,16 +49,7 @@
             }
         });
 
-        scope.$watch('isEditing', function (newValue, oldValue) {
-            if (newValue) {
-                unifyHeights();
-                return;
-            }
-        });
-
         scope.$watch('model.content', function (newValue, oldValue) {
-
-            unifyHeights();
 
             //not sure why, but the urls are double encoded
             var url = decodeURIComponent($location.url());
@@ -159,4 +135,21 @@
         restrict: "E",
         link: linker
     }
+}).directive('autoGrow', function ($timeout) {
+
+    var linker = function (scope, element, attrs) {
+        scope.$watch('isEditing', function (newValue, oldValue) {
+            if (newValue) {
+                $timeout(function() {
+                    element.autogrow();
+                }, 100);
+            }
+        });
+    }
+
+    return {
+        restrict: "A",
+        link: linker
+    }
 });
+
