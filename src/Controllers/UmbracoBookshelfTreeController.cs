@@ -33,9 +33,12 @@ namespace UmbracoBookshelf.Controllers
                 menu.Items.Add<ActionNew>("Create");
                 menu.Items.Add<ActionRefresh>("Reload Nodes");
             }
-            
-            menu.Items.Add<ActionMove>("Rename");
-            menu.Items.Add<ActionDelete>("Delete");
+
+            if (id != "-1")
+            {
+                menu.Items.Add<ActionMove>("Rename");
+                menu.Items.Add<ActionDelete>("Delete");
+            }
 
             return menu;
         }
