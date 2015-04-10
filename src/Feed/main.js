@@ -17,12 +17,6 @@
             "user":"mkimmet",
             "repo":"Umbraco-Developer-Tutorials",
             "branch":"master"
-        },
-        {
-            "title": "Archetype Manual",
-            "user":"kgiszewski",
-            "repo":"ArchetypeManual",
-            "branch":"master"
         }
     ]
 }
