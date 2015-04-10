@@ -21,7 +21,7 @@
         {
             "title": "Archetype Manual",
             "user":"kgiszewski",
-            "repo":"Archetype Manual",
+            "repo":"ArchetypeManual",
             "branch":"master"
         }
     ]
