@@ -65,9 +65,6 @@
         });
 
         scope.$watch('isEditing', function (newValue, oldValue) {
-
-            console.log(newValue);
-
             if (newValue) {
                 unifyHeights();
                 return;
