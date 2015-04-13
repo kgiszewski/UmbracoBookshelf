@@ -30,14 +30,16 @@
     }
 
     $scope.save = function () {
-        $scope.isSaving = true;
+        if (!$scope.isSaving) {
+            $scope.isSaving = true;
 
-        umbracoBookshelfService.saveFile($scope.model.filePath, $scope.model.content).then(function (data) {
-            $scope.isSaving = false;
-            $scope.hasEdited = false;
+            umbracoBookshelfService.saveFile($scope.model.filePath, $scope.model.content).then(function(data) {
+                $scope.isSaving = false;
+                $scope.hasEdited = false;
 
-            notificationsService.success("Success", "The file has been saved.");
-        });
+                notificationsService.success("Success", "The file has been saved.");
+            });
+        }
     }
 
     $rootScope.$on('$locationChangeStart', function (event, nextLocation, currentLocation) {
