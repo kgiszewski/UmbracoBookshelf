@@ -25,7 +25,8 @@ namespace UmbracoBookshelf.Controllers
             return new
             {
                 fileExtensions = Helpers.Constants.ALLOWED_FILE_EXTENSIONS,
-                imageExtensions = Helpers.Constants.ALLOWED_IMAGE_EXTENSIONS
+                imageExtensions = Helpers.Constants.ALLOWED_IMAGE_EXTENSIONS,
+                disableEditing = Helpers.Constants.DISABLE_EDITING
             };
         }
 
@@ -90,6 +91,8 @@ namespace UmbracoBookshelf.Controllers
         [HttpPost]
         public object SaveFile(FileSaveModel model)
         {
+            _ensureDisableEditing();
+
             var systemFilePath = model.FilePath.ToSystemPath();
 
             if(!systemFilePath.EndsWith(Helpers.Constants.MARKDOWN_FILE_EXTENSION))
@@ -108,6 +111,8 @@ namespace UmbracoBookshelf.Controllers
         [HttpPost]
         public object Delete(DeletePathModel model)
         {
+            _ensureDisableEditing();
+
             var systemPath = ("/" + model.Path).ToSystemPath(1);
 
             var isDirectory = File.GetAttributes(systemPath).HasFlag(FileAttributes.Directory);
@@ -130,6 +135,8 @@ namespace UmbracoBookshelf.Controllers
         [HttpPost]
         public object CreateFile(CreateFileModel model)
         {
+            _ensureDisableEditing();
+
             model.FilePath = _ensureRootPath(model.FilePath);
 
             var systemPath = model.FilePath.ToSystemPath(1);
@@ -166,6 +173,8 @@ namespace UmbracoBookshelf.Controllers
         [HttpPost]
         public object CreateFolder(CreateFolderModel model)
         {
+            _ensureDisableEditing();
+
             model.Path = _ensureRootPath(model.Path);
 
             var systemPath = model.Path.ToSystemPath(1);
@@ -332,6 +341,14 @@ namespace UmbracoBookshelf.Controllers
             }
 
             return path;
+        }
+
+        private void _ensureDisableEditing()
+        {
+            if (Helpers.Constants.DISABLE_EDITING)
+            {
+                throw new Exception("Editing is disabled."); 
+            }
         }
     }
 } 

@@ -24,7 +24,7 @@
                             <button class="btn btn btn-default" ng-click="toggleEdit();">Hide Editor</button>
                             <button class="btn btn btn-success" ng-click="save()" ng-disabled="isSaving">Save</button>
                         </div>
-                        <div ng-hide="isEditing">
+                        <div ng-hide="isEditing || config.disableEditing">
                             <button class="btn btn btn-default" style="float: right;" ng-click="toggleEdit();">Edit</button>
                         </div>
                     </div>
