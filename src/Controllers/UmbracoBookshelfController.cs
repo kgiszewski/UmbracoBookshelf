@@ -108,7 +108,7 @@ namespace UmbracoBookshelf.Controllers
             };
         }
 
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         public object Delete(DeletePathModel model)
         {
             _ensureDisableEditing();
