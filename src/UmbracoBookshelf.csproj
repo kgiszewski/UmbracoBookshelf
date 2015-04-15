@@ -235,7 +235,6 @@
     <Content Include="Assets\less\application.less" />
     <Content Include="InitialContent\UmbracoBookshelf\Umbraco Bookshelf Documentation\README.md" />
     <Content Include="packages.config" />
-    <Content Include="UmbracoBookshelf\Umbraco Bookshelf Documentation\README.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

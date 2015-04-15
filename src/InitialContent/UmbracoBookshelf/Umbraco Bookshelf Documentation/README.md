@@ -19,7 +19,7 @@ Advanced users can modify their `web.config` file and modify the appSetting `<ad
 ##Creating a Book#
 Books are just `.md` files that live in the `UmbracoBookshelf` folder of your webroot.  So to create a book, just create a sub-folder next to your other books (like this one).  By default when a user clicks the folder in the tree to the left, the `README.md` file is loaded for the user.
 
-Want to add images?  Just add a folder with images and use relative links.
+Want to add images?  Just add a folder with images and use relative links.  You can perform many of these operations by right-clicking on an item in the tree, or by using the markdown toolbar while editing.
 
 Links should be relative to the current folder (`MyChapter/README.md`) or relative to the root (`/BookRoot/README.md`).  At this time support for relative paths like `../../` is not yet available.
 
