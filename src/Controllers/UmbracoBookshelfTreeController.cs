@@ -7,6 +7,7 @@ using Umbraco.Core.IO;
 using Umbraco.Web.Models.Trees;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.Trees;
+using UmbracoBookshelf.Helpers;
 
 namespace UmbracoBookshelf.Controllers
 {
@@ -51,29 +52,12 @@ namespace UmbracoBookshelf.Controllers
         {
             var nodes = new TreeNodeCollection();
 
-            nodes.AddRange(getNodes(id, queryStrings));
+            nodes.AddRange(_getNodes(id, queryStrings));
 
             return nodes;
         }
 
-        private string getWebPath(string mappedPath)
-        {
-            var urlRoot = new Uri(IOHelper.MapPath("~") + "/");
-            var path = urlRoot.MakeRelativeUri(new Uri(mappedPath)).ToString();        
-
-            //normal filesystem placement
-            path = path.Replace(".." + Helpers.Constants.ROOT_DIRECTORY , "");
-
-            //fixup virtual relative paths
-            path = path.Replace("/..", "").Replace("..","");
-
-            //both virtual and normal
-            path = path.Replace("/", "%2F");
-
-            return path;
-        }
-
-        private TreeNodeCollection getNodes(string id, FormDataCollection queryStrings)
+        private TreeNodeCollection _getNodes(string id, FormDataCollection queryStrings)
         {
             var orgPath = "";
             var path = "";
@@ -102,7 +86,7 @@ namespace UmbracoBookshelf.Controllers
                 {
                     var node = CreateTreeNode(orgPath + dir.Name, orgPath, queryStrings, dir.Name, "icon-folder", hasChildren);
 
-                    node.RoutePath = "/UmbracoBookshelf/UmbracoBookshelfTree/folder/" + getWebPath(dir.FullName);
+                    node.RoutePath = "/UmbracoBookshelf/UmbracoBookshelfTree/folder/" + dir.FullName.ToWebPath();
 
                     if (node != null)
                         nodes.Add(node);
@@ -132,7 +116,7 @@ namespace UmbracoBookshelf.Controllers
 
                     var node = CreateTreeNode(orgPath + file.Name, orgPath, queryStrings, file.Name, "icon-document", false);
 
-                    node.RoutePath = "/UmbracoBookshelf/UmbracoBookshelfTree/file/" + getWebPath(file.FullName);
+                    node.RoutePath = "/UmbracoBookshelf/UmbracoBookshelfTree/file/" + file.FullName.ToWebPath();
 
                     if (node != null)
                         nodes.Add(node);

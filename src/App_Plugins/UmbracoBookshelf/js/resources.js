@@ -34,6 +34,11 @@
             return umbRequestHelper.resourcePromise(
                 $http.get("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/getconfig/"), 'Failed to get config'
             );
+        },
+        getImages: function(currentPath) {
+            return umbRequestHelper.resourcePromise(
+                $http.get("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/getimages/?currentPath=" + currentPath), 'Failed to get images'
+            );
         }
     }
 });

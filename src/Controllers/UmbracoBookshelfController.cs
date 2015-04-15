@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
 using Umbraco.Core.IO;
 using Umbraco.Web.Editors;
 using Umbraco.Web.Mvc;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Web.Mvc;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
@@ -265,9 +265,27 @@ namespace UmbracoBookshelf.Controllers
             return JObject.Parse(responseFromServer);
         }
 
+        [HttpGet]
+        public object GetImages(string currentPath)
+        {
+            //get current directory
+            var systemPath = Path.GetDirectoryName(_ensureRootPath(currentPath).ToSystemPath());
+            
+            //search for any media files
+            var imageFiles = systemPath.GetFilesRecursively();
+
+            return imageFiles.Select(x => new ImageModel()
+            {
+                RelativePath = x.ToWebPath(true).Replace(systemPath.ToWebPath(true), "").Substring(1),
+                Alt = Path.GetFileName(x),
+                FilePath = x.ToWebPath(true)
+            });
+        }
+
         private void ExtractZipFile(string archiveFilenameIn, string outFolder, string password = "")
         {
             ZipFile zf = null;
+
             try
             {
                 var fs = File.OpenRead(archiveFilenameIn);

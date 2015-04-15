@@ -225,9 +225,11 @@
     <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\create.html" />
     <Content Include="App_Plugins\UmbracoBookshelf\backoffice\UmbracoBookshelfTree\move.html" />
     <None Include="Assets\less\highlight.less" />
+    <Content Include="App_Plugins\UmbracoBookshelf\dialogs\imageSelector.html" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\autogrow.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\create.controller.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\highlight.pack.js" />
+    <Content Include="App_Plugins\UmbracoBookshelf\js\imageSelector.controller.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\move.controller.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\package.manifest" />
     <Content Include="Assets\less\application.less" />
@@ -265,11 +267,12 @@
     <Compile Include="Controllers\UmbracoBookshelfTreeController.cs" />
     <Compile Include="Events\PackageActions.cs" />
     <Compile Include="Helpers\Constants.cs" />
-    <Compile Include="Helpers\FileSystemHelper.cs" />
+    <Compile Include="Helpers\FileSystemExtensions.cs" />
     <Compile Include="Models\CreateFileModel.cs" />
     <Compile Include="Models\CreateFolderModel.cs" />
     <Compile Include="Models\DeletePathModel.cs" />
     <Compile Include="Models\FileSaveModel.cs" />
+    <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\RenameModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

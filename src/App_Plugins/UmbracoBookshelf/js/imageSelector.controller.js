@@ -1,12 +1,12 @@
-﻿angular.module('umbraco').controller('UmbracoBookshelfImageSelectorController', function ($scope, $routeParams) {
+﻿angular.module('umbraco').controller('UmbracoBookshelfImageSelectorController', function ($scope, $routeParams, umbracoBookshelfResource) {
 
     $scope.model = {};
 
-    $scope.model.filePath = decodeURIComponent($routeParams.id);
+    $scope.model.currentPath = decodeURIComponent($routeParams.id);
 
-    console.log($scope.model.filePath);
-
-    $scope.model.images = [{ filePath: "/Books/BizmagManual/assets/codegarden.png", alt: "foo" }, { filePath: "/Books/BizmagManual/assets/codegarden.png", alt: "foo" }, { filePath: "/Books/BizmagManual/assets/codegarden.png", alt: "foo" }, { filePath: "/Books/BizmagManual/assets/codegarden.png", alt: "foo" }];
+    umbracoBookshelfResource.getImages($scope.model.currentPath).then(function(data) {
+        $scope.model.images = data;
+    });
 
     $scope.select = function(index) {
         $scope.submit($scope.model.images[index]);

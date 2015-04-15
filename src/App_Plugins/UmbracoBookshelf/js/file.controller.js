@@ -65,10 +65,8 @@
             template: '/App_Plugins/UmbracoBookshelf/dialogs/imageSelector.html',
             show: true,
             callback: function(data) {
-                console.log(data);
-
                 sendMdBroadcast({
-                    md: "![" + data.alt + "](" + data.filePath + ")"
+                    md: "![" + data.Alt + "](" + data.RelativePath + ")"
                 });
             }
         });
