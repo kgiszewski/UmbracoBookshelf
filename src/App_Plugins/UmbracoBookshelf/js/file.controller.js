@@ -1,4 +1,4 @@
-﻿angular.module('umbraco').controller('UmbracoBookshelfFileController', function ($scope, $http, $routeParams, $rootScope, umbracoBookshelfResource, umbracoBookshelfService, notificationsService) {
+﻿angular.module('umbraco').controller('UmbracoBookshelfFileController', function ($scope, $http, $routeParams, $rootScope, dialogService, umbracoBookshelfResource, umbracoBookshelfService, notificationsService) {
 
     $scope.model = {};
     $scope.model.filePath = decodeURIComponent($routeParams.id);
@@ -61,8 +61,16 @@
     }
 
     $scope.insertImageMd = function () {
-        sendMdBroadcast({
-            md: "![alt text](url)"
+        dialogService.open({
+            template: '/App_Plugins/UmbracoBookshelf/dialogs/imageSelector.html',
+            show: true,
+            callback: function(data) {
+                console.log(data);
+
+                sendMdBroadcast({
+                    md: "![" + data.alt + "](" + data.filePath + ")"
+                });
+            }
         });
     }
 

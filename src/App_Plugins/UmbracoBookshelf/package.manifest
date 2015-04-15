@@ -11,7 +11,8 @@
         "~/App_Plugins/UmbracoBookshelf/js/directives.js",
         "~/App_Plugins/UmbracoBookshelf/js/marked.min.js",
         "~/App_Plugins/UmbracoBookshelf/js/highlight.pack.js",
-        "~/App_Plugins/UmbracoBookshelf/js/autogrow.js"
+        "~/App_Plugins/UmbracoBookshelf/js/autogrow.js",
+        "~/App_Plugins/UmbracoBookshelf/js/imageSelector.controller.js"
     ],
     "css": [
         "~/App_Plugins/UmbracoBookshelf/css/application.css"

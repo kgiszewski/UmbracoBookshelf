@@ -1,0 +1,10 @@
+﻿<div class="umb-dialog" ng-controller="UmbracoBookshelfImageSelectorController">
+    <div class="umb-dialog-body" auto-scale="90">
+
+        <div class="bookshelf-image-wrapper">
+            <div class="" ng-repeat="image in model.images" style="">
+                <img ng-src="{{image.filePath}}" alt="{{image.alt}}" ng-click="select($index);"/>
+            </div>
+        </div>
+    </div>
+</div>
