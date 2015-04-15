@@ -98,7 +98,7 @@
         }
 
         sendMdBroadcast({
-            md: hashes + "\n<code>\n" + hashes
+            md: hashes + "<code>" + hashes
         });
     }
 });

@@ -168,7 +168,7 @@
         });
 
         scope.$on('insertMd', function (ev, args) {
-            insertAtCaret(element.get(0), args.md);
+            insertAtCaret(element.get(0), "\n" + args.md + "\n");
         });
     }
 

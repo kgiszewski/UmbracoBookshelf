@@ -2,6 +2,7 @@
     <div class="umb-dialog-body" auto-scale="90">
 
         <div class="bookshelf-image-wrapper">
+            <p style="padding: 5px" ng-show="model.images.length == 0">There were no images found in child folders of this content.  Create a folder for your images and add at least one file.</p>
             <div class="" ng-repeat="image in model.images" style="">
                 <img ng-src="{{image.FilePath}}" alt="{{image.Alt}}" ng-click="select($index);"/>
             </div>
