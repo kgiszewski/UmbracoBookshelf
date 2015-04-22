@@ -88,7 +88,7 @@ namespace UmbracoBookshelf.Controllers
             }
         }
 
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         public object SaveFile(FileSaveModel model)
         {
             _ensureDisableEditing();
@@ -132,7 +132,7 @@ namespace UmbracoBookshelf.Controllers
             };
         }
 
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         public object CreateFile(CreateFileModel model)
         {
             _ensureDisableEditing();
@@ -149,7 +149,7 @@ namespace UmbracoBookshelf.Controllers
             };
         }
 
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         public object Rename(RenameModel model)
         {
             var systemPath = model.SourcePath.ToSystemPath(0);
@@ -170,7 +170,7 @@ namespace UmbracoBookshelf.Controllers
             };
         }
 
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         public object CreateFolder(CreateFolderModel model)
         {
             _ensureDisableEditing();
@@ -191,7 +191,7 @@ namespace UmbracoBookshelf.Controllers
             };
         }
 
-        [HttpGet]
+        [System.Web.Http.HttpGet]
         public object DownloadUrl(string url)
         {
             try
@@ -246,7 +246,7 @@ namespace UmbracoBookshelf.Controllers
             }
         }
 
-        [HttpGet]
+        [System.Web.Http.HttpGet]
         public object GetBookFeed()
         {
             var request = WebRequest.Create(Helpers.Constants.FEED_URL);
@@ -265,7 +265,7 @@ namespace UmbracoBookshelf.Controllers
             return JObject.Parse(responseFromServer);
         }
 
-        [HttpGet]
+        [System.Web.Http.HttpGet]
         public object GetImages(string currentPath)
         {
             //get current directory
