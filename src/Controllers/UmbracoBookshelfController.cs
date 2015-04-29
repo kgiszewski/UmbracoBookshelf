@@ -65,7 +65,7 @@ namespace UmbracoBookshelf.Controllers
         {
             try
             {
-                var systemFilePath = dirPath.ToSystemPath();
+               var systemFilePath = dirPath.ToSystemPath();
 
                var readme = Directory.GetFiles(systemFilePath)
                     .FirstOrDefault(x => Path.GetFileName(x) == Helpers.Constants.FOLDER_FILE);
@@ -196,7 +196,7 @@ namespace UmbracoBookshelf.Controllers
         {
             try
             {
-                var downloadsDirectory = IOHelper.MapPath(Path.GetTempPath() + DateTime.Now.Ticks + "/");
+                var downloadsDirectory = IOHelper.MapPath(Constants.ROOT_DIRECTORY + "/TEMP/" + DateTime.Now.Ticks + "/");
                 var fileName = Path.GetFileName(url);
 
                 Directory.CreateDirectory(Path.GetDirectoryName(downloadsDirectory));
