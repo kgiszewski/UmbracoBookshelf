@@ -57,6 +57,7 @@ namespace UmbracoBookshelf.Controllers
             return nodes;
         }
 
+        //this is adapted from the Core team's normal FileSystemTreeController by Per Ploug
         private TreeNodeCollection _getNodes(string id, FormDataCollection queryStrings)
         {
             var orgPath = "";
