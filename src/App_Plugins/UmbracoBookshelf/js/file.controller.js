@@ -100,6 +100,12 @@
         });
     }
 
+    $scope.insertBlockquoteMd = function () {
+        sendMdBroadcast({
+            md: ">foo"
+        });
+    }
+
     $scope.insertCodeMd = function (number) {
         var hashes = "";
 
