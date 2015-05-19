@@ -22,6 +22,8 @@ Books should be written in Markdown and Bookshelf recognizes Github Flavored Mar
 * https://help.github.com/articles/markdown-basics/
 * https://help.github.com/articles/github-flavored-markdown/
 
+There is now an editor to help you create folders, files and markdown.
+
 *Please refrain from using `HTML` directly when possible.  Some things like embedding videos are unavoidable.*
 
 ##Consider Contributing Your Time##
