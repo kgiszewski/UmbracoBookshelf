@@ -7,6 +7,15 @@
     $scope.hasEdited = false;
     $scope.model.content = "";
     $scope.config = {};
+    $scope.dirty = false;
+
+    $scope.makeDirty = function() {
+        $scope.dirty = true;
+    }
+
+    $scope.makeClean = function () {
+        $scope.dirty = false;
+    }
 
     function sendMdBroadcast(args) {
         $scope.$broadcast("insertMd", args);
@@ -30,7 +39,7 @@
     }
 
     $scope.save = function () {
-        if (!$scope.isSaving) {
+        if (!$scope.isSaving && $scope.dirty) {
             $scope.isSaving = true;
 
             umbracoBookshelfService.saveFile($scope.model.filePath, $scope.model.content).then(function(data) {
@@ -38,6 +47,7 @@
                 $scope.hasEdited = false;
 
                 notificationsService.success("Success", "The file has been saved.");
+                $scope.makeClean();
             });
         }
     }
