@@ -1,4 +1,5 @@
 # UmbracoBookshelf
+![Bookshelf](https://github.com/kgiszewski/UmbracoBookshelf/blob/master/assets/logo.png)
 
 Bookshelf will allow users to create, display and share Umbraco learning resources quickly.
 
