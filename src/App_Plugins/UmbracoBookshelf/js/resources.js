@@ -39,6 +39,11 @@
             return umbRequestHelper.resourcePromise(
                 $http.get("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/getimages/?currentPath=" + currentPath), 'Failed to get images'
             );
+        },
+        getSiblingFiles: function (filePath) {
+            return umbRequestHelper.resourcePromise(
+                $http.get("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/getsiblingfiles/?filePath=" + filePath), 'Failed to get sibling files'
+            );
         }
     }
 });

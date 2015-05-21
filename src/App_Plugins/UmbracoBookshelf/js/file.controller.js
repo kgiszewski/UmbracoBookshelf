@@ -117,5 +117,17 @@
             md: hashes + "<code>" + hashes
         });
     }
+
+    $scope.insertBackNextMd = function () {
+        umbracoBookshelfResource.getSiblingFiles($scope.model.filePath).then(function (data) {
+
+            var back = (data.Back) ? "[<Back " + data.Back.replace(/.md/, '').replace(/readme/i, "Overview") + "](" + data.Back + ")\n\n" : "";
+            var next = (data.Next) ? "[Next> " + data.Next.replace(/.md/, '') + "](" + data.Next + ")" : "";
+
+            sendMdBroadcast({
+                md: back + next
+            });
+        });
+    }
 });
 

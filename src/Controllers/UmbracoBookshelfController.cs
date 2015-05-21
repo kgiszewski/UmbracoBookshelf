@@ -11,9 +11,11 @@ using System.Web.Mvc;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
+using Umbraco.Core;
 using Umbraco.Core.Logging;
 using UmbracoBookshelf.Models;
 using UmbracoBookshelf.Helpers;
+using Constants = UmbracoBookshelf.Helpers.Constants;
 
 namespace UmbracoBookshelf.Controllers
 {
@@ -61,6 +63,83 @@ namespace UmbracoBookshelf.Controllers
             }
         }
 
+        public object GetSiblingFiles(string filePath)
+        {
+            try
+            {
+                var fullFilePath = filePath.ToSystemPath();
+
+                var extension = Path.GetExtension(fullFilePath);
+
+                if (!extension.EndsWith(Helpers.Constants.MARKDOWN_FILE_EXTENSION))
+                {
+                    throw new WebException("Invalid file type");
+                }
+
+                var searchedFilename = Path.GetFileName(fullFilePath);
+
+                var systemFilePath = Path.GetDirectoryName(fullFilePath);
+
+                var files = Directory.GetFiles(systemFilePath);
+
+                var indexOfSearchedFile = files.IndexOf(fullFilePath);
+
+                //figure next file
+                var nextFile = "";
+
+                if (files.Length - 1 > indexOfSearchedFile)
+                {
+                    nextFile = Path.GetFileName(files[indexOfSearchedFile + 1]);
+
+                    if (nextFile.ToLower() == "readme.md")
+                    {
+                        nextFile = "";
+                    }
+                }
+                else
+                {
+                    if (searchedFilename.ToLower() == "readme.md")
+                    {
+                        nextFile = Path.GetFileName(files[0]);
+                    }
+                }
+
+                //figure back file
+                var backFile = "";
+
+                if (indexOfSearchedFile == 0)
+                {
+                    backFile = "README.md";
+                }
+                else
+                {
+                    backFile = Path.GetFileName(files[indexOfSearchedFile - 1]);
+
+                    if (searchedFilename.ToLower() == "readme.md")
+                    {
+                        backFile = "";
+                    }
+                }
+
+                return new
+                {
+                    SearchedFile = searchedFilename,
+                    Back = backFile,
+                    Next = nextFile
+                };
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error<Exception>(ex.Message, ex);
+
+                return new
+                {
+                    Back = "",
+                    Next = ""
+                };
+            }
+        }
+
         public object GetFolderContents(string dirPath)
         {
             try
@@ -104,7 +183,7 @@ namespace UmbracoBookshelf.Controllers
 
             return new
             {
-                Status = "Saved"
+                Status = "Saved."
             };
         }
 
