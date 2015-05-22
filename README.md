@@ -5,6 +5,8 @@ Bookshelf will allow users to create, display and share Umbraco learning resourc
 
 Bookshelf works by reading markdown files from the `UmbracoBookshelf` folder of your website. 
 
+![Sample](https://our.umbraco.org/media/wiki/144508/635650696507955335_Screen-Shot-2015-04-19-at-15038-PMpng.png)
+
 ##Install a Book##
 Books are available on the Bookshelf dashboard or you can install any zipped markdown book.
 
