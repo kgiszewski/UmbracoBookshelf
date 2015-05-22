@@ -1,7 +1,7 @@
 # UmbracoBookshelf
 ![Bookshelf](https://github.com/kgiszewski/UmbracoBookshelf/blob/master/assets/logo.png)
 
-Bookshelf will allow users to create, display and share Umbraco learning resources quickly.
+Bookshelf will allow users to create, display and share learning resources quickly through the Umbraco backoffice.
 
 Bookshelf works by reading markdown files from the `UmbracoBookshelf` folder of your website. 
 
