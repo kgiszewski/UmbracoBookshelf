@@ -7,6 +7,9 @@ Bookshelf works by reading markdown files from the `UmbracoBookshelf` folder of 
 
 ![Sample](https://our.umbraco.org/media/wiki/144508/635650696507955335_Screen-Shot-2015-04-19-at-15038-PMpng.png)
 
+##Install this Package##
+Use [NuGet](https://www.nuget.org/packages/umbracobookshelf/) or [Our Umbraco](https://our.umbraco.org/projects/backoffice-extensions/bookshelf) to download and install like you would any other Umbraco package.
+
 ##Install a Book##
 Books are available on the Bookshelf dashboard or you can install any zipped markdown book.
 
