@@ -88,6 +88,18 @@
         });
     }
 
+    $scope.insertBoldMd = function () {
+        sendMdBroadcast({
+            md: "**foo**"
+        });
+    }
+
+    $scope.insertItalicMd = function () {
+        sendMdBroadcast({
+            md: "*foo*"
+        });
+    }
+
     $scope.insertOlMd = function () {
         sendMdBroadcast({
             md: "1. foo\n2. bar\n"
