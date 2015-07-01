@@ -10,7 +10,7 @@
         <div ng-swipe-left="nav.hideNavigation()" class="navigation-inner-container span6" style="z-index: 100">
 
             <!-- the search -->
-            <div ng-controller="Umbraco.SearchController" ng-if="authenticated">
+            <div ng-controller="umbracoBookshelfSearchController">
 
                 <!-- Search form -->
                 <div id="search-form">
@@ -21,38 +21,32 @@
                             <input type="text"
                                    hotkey="ctrl+space"
                                    id="search-field"
-                                   ng-model="searchTerm"
+                                   ng-model="model.keywords"
                                    class="umb-search-field search-query"
-                                   localize="placeholder"
-                                   placeholder="@placeholders_search"
+                                   placeholder="Type to search your books..."
                                    ng-keydown="navigateResults($event)" />
                         </form>
                     </div>
                 </div>
 
                 <!-- Search results -->
-                <div id="search-results" class="umb-modalcolumn-body" ng-show="showSearchResults">
+                <div id="search-results" class="umb-modalcolumn-body" ng-show="model.keywords">
 
                     <ul class="umb-tree">
                         <li class="root">
                             <div>
-                                <h5><localize key="general_searchResults">Search results</localize></h5>
-                                <h5>bam!</h5>
+                                <h5>Bookshelf Search Results</h5>
                             </div>
 
-                            <ul class="umb-search-group" ng-repeat="group in groups">
-                                <li ng-repeat="result in group.results" ng-class="{'current':selectedItem == result}">
+                            <ul class="umb-search-group" ng-repeat="book in model.books">
+                                <li>
                                     <div>
-                                        <a ng-class="{'first':$first}" ng-click="searchHide()" ng-href="#/{{result.editorPath}}">
-
-                                            <i class="icon umb-tree-icon sprTree {{result.icon}}"></i>
-                                            {{result.name}}
-                                            <small class="search-subtitle" ng-show="result.subTitle">
-                                                {{result.subTitle}}
-                                            </small>
-                                        </a>
-
-                                        <a href ng-click="searchShowMenu($event, {node: result})" class="umb-options"><i></i><i></i><i></i></a>
+                                        <h5>{{book.name}}</h5>
+                                    </div>
+                                </li>
+                                <li ng-repeat="result in book.results">
+                                    <div>
+                                        <a href="{{result.url}}">{{result.name}}</a>
                                     </div>
                                 </li>
                             </ul>

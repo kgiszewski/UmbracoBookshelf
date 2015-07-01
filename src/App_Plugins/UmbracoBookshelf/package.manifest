@@ -13,7 +13,8 @@
         "~/App_Plugins/UmbracoBookshelf/js/highlight.pack.js",
         "~/App_Plugins/UmbracoBookshelf/js/autogrow.js",
         "~/App_Plugins/UmbracoBookshelf/js/imageSelector.controller.js",
-        "~/App_Plugins/UmbracoBookshelf/js/interceptors.js"
+        "~/App_Plugins/UmbracoBookshelf/js/interceptors.js",
+        "~/App_Plugins/UmbracoBookshelf/js/search.controller.js"
     ],
     "css": [
         "~/App_Plugins/UmbracoBookshelf/css/application.css"
