@@ -176,5 +176,46 @@
         restrict: "A",
         link: linker
     }
+}).directive('umbracoBookshelfNavigation', function ($http, $compile) {
+
+    function linker(scope, element, attrs) {
+        function getView(view) {
+            $http.get(view, { cache: false }).then(function (data) {
+
+                element.html(data.data).show();
+
+                $compile(element.contents())(scope);
+            });
+        }
+
+        scope.$on("$routeChangeSuccess", function(event, current, previous) {
+
+            var isComingFromBookshelf = (previous && previous.pathParams.section.toLowerCase().indexOf("umbracobookshelf") != -1);
+            var isOnBookshelf = (current.pathParams.section.toLowerCase().indexOf("umbracobookshelf") != -1);
+
+            //if on bookshelf but not coming from bookshelf
+            if (isOnBookshelf) {
+                if (!isComingFromBookshelf) {
+                    getView("/App_Plugins/UmbracoBookshelf/Views/navigation.html");
+                }
+            } else {
+                //if first time viewed
+                if (!previous) {
+                    getView("views/directives/umb-navigation.html?intercepted=1");
+                } else {
+                    //if coming from bookshelf
+                    if (isComingFromBookshelf) {
+                        getView("views/directives/umb-navigation.html?intercepted=1");
+                    }
+                }
+            }
+        });
+    }
+
+    return {
+        restrict: "E",
+        link: linker,
+        replace: true
+    }
 });
 
