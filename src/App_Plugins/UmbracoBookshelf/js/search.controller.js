@@ -6,10 +6,13 @@
     $scope.model.books = [];
 
     $scope.search = _.debounce(function() {
-        console.log('Calling server...');
-        umbracoBookshelfResource.searchFiles($scope.model.keywords).then(function(data) {
-            console.log(data);
-            $scope.model.books = data;
-        });
-    }, 500);
+        if ($scope.model.keywords) {
+            console.log('Calling server...' + $scope.model.keywords);
+            umbracoBookshelfResource.searchFiles($scope.model.keywords).then(function(data) {
+                console.log(data);
+                $scope.model.books = data;
+            });
+        }
+    },
+    500);
 });

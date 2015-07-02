@@ -47,7 +47,7 @@ namespace UmbracoBookshelf.Helpers
             return path;
         }
 
-        public static IEnumerable<string> GetFilesRecursively(this string startingDirectory)
+        public static IEnumerable<string> GetFilesRecursively(this string startingDirectory, bool onlyImages = true)
         {
             var list = new List<string>();
 
@@ -57,10 +57,20 @@ namespace UmbracoBookshelf.Helpers
                 {
                     foreach (string file in Directory.GetFiles(dir))
                     {
-                        if (Constants.ALLOWED_IMAGE_EXTENSIONS.Any(file.EndsWith))
+                        if (onlyImages)
                         {
-                            list.Add(file);
+                            if(Constants.ALLOWED_IMAGE_EXTENSIONS.Any(file.EndsWith))
+                            {
+                                list.Add(file);
+                            }
                         }
+                        else
+                        {
+                            if (Constants.ALLOWED_FILE_EXTENSIONS.Any(file.EndsWith) || file.EndsWith(Constants.MARKDOWN_FILE_EXTENSION))
+                            {
+                                list.Add(file);
+                            }
+                        }                        
                     }
 
                     GetFilesRecursively(dir);

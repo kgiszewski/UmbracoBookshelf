@@ -47,10 +47,12 @@
                                 <li ng-repeat="result in book.Results">
                                     <div>
                                         <a href="{{result.Url}}">{{result.Title}}</a>
+                                        <div>
+                                            <small>{{result.HintUrl}}</small>
+                                        </div>
                                     </div>
                                 </li>
                             </ul>
-
                         </li>
                     </ul>
                 </div>

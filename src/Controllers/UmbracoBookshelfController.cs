@@ -7,11 +7,13 @@ using Umbraco.Web.Mvc;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Web;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
 using Umbraco.Core;
 using Umbraco.Core.Logging;
+using Umbraco.Core.Media;
 using UmbracoBookshelf.Examine;
 using UmbracoBookshelf.Models;
 using UmbracoBookshelf.Helpers;
@@ -370,6 +372,8 @@ namespace UmbracoBookshelf.Controllers
 
             if (results.Any())
             {
+                LogHelper.Info<string>("Results=>" + results.Count());
+
                 var books = results.GroupBy(x => x.Fields["book"]);
 
                 foreach (var book in books)
@@ -381,13 +385,26 @@ namespace UmbracoBookshelf.Controllers
 
                     var resultsList = new List<BookResultModel.BookEntry>();
 
-                    foreach(var result in book)
+                    foreach(var result in book.OrderByDescending(x => x.Score).Take(3))
                     {
+                        var hintUrl = HttpUtility.UrlDecode(HttpUtility.UrlDecode(result.Fields["url"]));
+                        var title = HttpUtility.UrlDecode(HttpUtility.UrlDecode(result.Fields["title"]));
+
+                        hintUrl = hintUrl.Substring(0, hintUrl.Length - title.Length - 1);
+
+                        var hintWindowLength = 50;
+
+                        if (hintUrl.Length - hintWindowLength > 0)
+                        {
+                            hintUrl = "…" + hintUrl.Substring(hintUrl.Length - hintWindowLength);
+                        }
+
                         resultsList.Add(new BookResultModel.BookEntry()
-                            {
-                                Title = result.Fields["title"],
-                                Url = result.Fields["url"]
-                            });
+                        {
+                            Title = title,
+                            Url = result.Fields["url"],
+                            HintUrl = hintUrl
+                        });
                     }
 
                     bookData.Results = resultsList;
