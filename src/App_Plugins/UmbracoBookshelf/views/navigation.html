@@ -24,7 +24,7 @@
                                    ng-model="model.keywords"
                                    class="umb-search-field search-query"
                                    placeholder="Type to search your books..."
-                                   ng-keydown="navigateResults($event)" />
+                                   ng-keydown="search()" />
                         </form>
                     </div>
                 </div>
@@ -41,12 +41,12 @@
                             <ul class="umb-search-group" ng-repeat="book in model.books">
                                 <li>
                                     <div>
-                                        <h5>{{book.name}}</h5>
+                                        <h5>{{book.Name}}</h5>
                                     </div>
                                 </li>
-                                <li ng-repeat="result in book.results">
+                                <li ng-repeat="result in book.Results">
                                     <div>
-                                        <a href="{{result.url}}">{{result.name}}</a>
+                                        <a href="{{result.Url}}">{{result.Title}}</a>
                                     </div>
                                 </li>
                             </ul>

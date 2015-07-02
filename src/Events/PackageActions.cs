@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Xml;
 using umbraco.cms.businesslogic.packager;
 using Umbraco.Core;
 using Umbraco.Core.Logging;
+using UmbracoBookshelf.Examine;
 
 namespace UmbracoBookshelf.Events
 {
@@ -14,6 +12,8 @@ namespace UmbracoBookshelf.Events
         protected override void ApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
             base.ApplicationStarted(umbracoApplication, applicationContext);
+
+            LogHelper.Info<BookshelfExamineDataService>(typeof(BookshelfExamineDataService).FullName);
 
             if(string.IsNullOrEmpty(ConfigurationManager.AppSettings["UmbracoBookshelf:customFolder"]))
             {

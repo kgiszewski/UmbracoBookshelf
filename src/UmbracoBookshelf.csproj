@@ -230,8 +230,12 @@
     <Content Include="App_Plugins\UmbracoBookshelf\js\create.controller.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\highlight.pack.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\imageSelector.controller.js" />
+    <Content Include="App_Plugins\UmbracoBookshelf\js\interceptors.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\js\move.controller.js" />
+    <Content Include="App_Plugins\UmbracoBookshelf\js\search.controller.js" />
     <Content Include="App_Plugins\UmbracoBookshelf\package.manifest" />
+    <Content Include="App_Plugins\UmbracoBookshelf\views\navigation.html" />
+    <Content Include="App_Plugins\UmbracoBookshelf\views\navigation.router.html" />
     <Content Include="Assets\less\application.less" />
     <Content Include="InitialContent\UmbracoBookshelf\Umbraco Bookshelf Documentation\README.md" />
     <Content Include="packages.config" />
@@ -265,6 +269,9 @@
     <Compile Include="Controllers\UmbracoBookshelfMediaController.cs" />
     <Compile Include="Controllers\UmbracoBookshelfTreeController.cs" />
     <Compile Include="Events\PackageActions.cs" />
+    <Compile Include="Examine\BookResultModel.cs" />
+    <Compile Include="Examine\BookshelfExamineDataService.cs" />
+    <Compile Include="Examine\BookshelfSearcher.cs" />
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\FileSystemExtensions.cs" />
     <Compile Include="Models\CreateFileModel.cs" />

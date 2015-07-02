@@ -7,12 +7,12 @@ using Umbraco.Web.Mvc;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Web.Mvc;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
 using Umbraco.Core;
 using Umbraco.Core.Logging;
+using UmbracoBookshelf.Examine;
 using UmbracoBookshelf.Models;
 using UmbracoBookshelf.Helpers;
 using Constants = UmbracoBookshelf.Helpers.Constants;
@@ -359,6 +359,43 @@ namespace UmbracoBookshelf.Controllers
                 Alt = Path.GetFileName(x),
                 FilePath = x.ToWebPath(true)
             });
+        }
+
+        [System.Web.Http.HttpGet]
+        public object SearchFiles(string keywords)
+        {
+            var results = BookshelfSearcher.Search(keywords);
+
+            var data = new List<BookResultModel>();
+
+            if (results.Any())
+            {
+                var books = results.GroupBy(x => x.Fields["book"]);
+
+                foreach (var book in books)
+                {
+                    var bookData = new BookResultModel()
+                    {
+                        Name = book.Key
+                    };
+
+                    var resultsList = new List<BookResultModel.BookEntry>();
+
+                    foreach(var result in book)
+                    {
+                        resultsList.Add(new BookResultModel.BookEntry()
+                            {
+                                Title = result.Fields["title"],
+                                Url = result.Fields["url"]
+                            });
+                    }
+
+                    bookData.Results = resultsList;
+                    data.Add(bookData);
+                }
+            }
+
+            return data;
         }
 
         private void ExtractZipFile(string archiveFilenameIn, string outFolder, string password = "")
