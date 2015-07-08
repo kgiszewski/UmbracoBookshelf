@@ -5,14 +5,18 @@
 
     $scope.model.books = [];
 
-    $scope.search = _.debounce(function() {
-        if ($scope.model.keywords) {
-            console.log('Calling server...' + $scope.model.keywords);
+    $scope.isLoading = false;
+
+    $scope.search = function() {
+
+        if ($scope.model.keywords && $scope.model.keywords.length > 2) {
+
+            $scope.isLoading = true;
+
             umbracoBookshelfResource.searchFiles($scope.model.keywords).then(function(data) {
-                console.log(data);
                 $scope.model.books = data;
+                $scope.isLoading = false;
             });
         }
-    },
-    500);
+    }
 });

@@ -13,7 +13,7 @@ namespace UmbracoBookshelf.Helpers
         public const string MARKDOWN_FILE_EXTENSION = ".md";
 
         public static List<string> ALLOWED_FILE_EXTENSIONS =
-            new List<string>() { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".csv"};
+            new List<string>() { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".csv", ".md"};
 
         public static List<string> ALLOWED_IMAGE_EXTENSIONS =
             new List<string>() { ".jpg", ".png", ".gif" };

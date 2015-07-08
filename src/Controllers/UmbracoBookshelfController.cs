@@ -8,12 +8,12 @@ using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
+using Examine;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
 using Umbraco.Core;
 using Umbraco.Core.Logging;
-using Umbraco.Core.Media;
 using UmbracoBookshelf.Examine;
 using UmbracoBookshelf.Models;
 using UmbracoBookshelf.Helpers;
@@ -310,6 +310,8 @@ namespace UmbracoBookshelf.Controllers
 
                 Directory.Delete(downloadsDirectory, true);
 
+                ExamineManager.Instance.IndexProviderCollection["BookshelfIndexer"].RebuildIndex();
+
                 return new
                 {
                     Status = "Downloaded"
@@ -353,7 +355,7 @@ namespace UmbracoBookshelf.Controllers
             var systemPath = Path.GetDirectoryName(_ensureRootPath(currentPath).ToSystemPath());
             
             //search for any media files
-            var imageFiles = systemPath.GetFilesRecursively();
+            var imageFiles = systemPath.GetFilesRecursively(Constants.ALLOWED_IMAGE_EXTENSIONS);
 
             return imageFiles.Select(x => new ImageModel()
             {
@@ -372,9 +374,9 @@ namespace UmbracoBookshelf.Controllers
 
             if (results.Any())
             {
-                LogHelper.Info<string>("Results=>" + results.Count());
-
                 var books = results.GroupBy(x => x.Fields["book"]);
+
+                var resultsPerBook = 10;
 
                 foreach (var book in books)
                 {
@@ -385,12 +387,12 @@ namespace UmbracoBookshelf.Controllers
 
                     var resultsList = new List<BookResultModel.BookEntry>();
 
-                    foreach(var result in book.OrderByDescending(x => x.Score).Take(3))
+                    foreach(var result in book.OrderByDescending(x => x.Score).Take(resultsPerBook))
                     {
                         var hintUrl = HttpUtility.UrlDecode(HttpUtility.UrlDecode(result.Fields["url"]));
                         var title = HttpUtility.UrlDecode(HttpUtility.UrlDecode(result.Fields["title"]));
 
-                        hintUrl = hintUrl.Substring(0, hintUrl.Length - title.Length - 1);
+                        hintUrl = hintUrl.Substring(0, hintUrl.Length - title.Length - 3);
 
                         var hintWindowLength = 50;
 
@@ -403,8 +405,11 @@ namespace UmbracoBookshelf.Controllers
                         {
                             Title = title,
                             Url = result.Fields["url"],
-                            HintUrl = hintUrl
+                            HintUrl = hintUrl,
+                            Score = result.Score.ToString()
                         });
+
+                        bookData.TotalScore += result.Score;
                     }
 
                     bookData.Results = resultsList;
@@ -412,7 +417,7 @@ namespace UmbracoBookshelf.Controllers
                 }
             }
 
-            return data;
+            return data.OrderByDescending(x => x.TotalScore);
         }
 
         private void ExtractZipFile(string archiveFilenameIn, string outFolder, string password = "")

@@ -24,7 +24,7 @@
                                    ng-model="model.keywords"
                                    class="umb-search-field search-query"
                                    placeholder="Type to search your books..."
-                                   ng-keydown="search()" />
+                                   ng-keyup="search()" />
                         </form>
                     </div>
                 </div>
@@ -37,6 +37,18 @@
                             <div>
                                 <h5>Bookshelf Search Results</h5>
                             </div>
+
+                            <div class="loading" ng-show="isLoading">
+                                <img src="/App_Plugins/UmbracoBookshelf/Assets/Images/loader.gif"/>LOADING...
+                            </div>
+
+                            <ul class="umb-search-group"  ng-show="model.books.length == 0">
+                                <li>
+                                    <div>
+                                        <h6>No results.</h6>
+                                    </div>
+                                </li>
+                            </ul>
 
                             <ul class="umb-search-group" ng-repeat="book in model.books">
                                 <li>
@@ -56,7 +68,6 @@
                         </li>
                     </ul>
                 </div>
-
             </div>
 
             <!-- the tree -->
