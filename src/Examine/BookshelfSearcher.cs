@@ -18,7 +18,7 @@ namespace UmbracoBookshelf.Examine
 
                 foreach (var word in words)
                 {
-                    var contentRawQuery = string.Format("(+__IndexType:bookshelf && (title: {0}~{1} path: {0}~{1} book: {0}~{1} text: {0}~{1}))", word, 0.5);
+                    var contentRawQuery = string.Format("(+__IndexType:bookshelf && (title: {0}~{1} path: {0}~{1} book: {0}~{1} text: {0}~{1}))", word, 0.8);
                     rawQueries.Add(contentRawQuery);
                 }
             }

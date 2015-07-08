@@ -19,4 +19,8 @@
             });
         }
     }
+
+    $scope.clear = function() {
+        $scope.model.keywords = "";
+    }
 });

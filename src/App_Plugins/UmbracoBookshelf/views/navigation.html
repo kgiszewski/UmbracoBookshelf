@@ -5,7 +5,7 @@
     </umb-sections>
 
     <!-- navigation container -->
-    <div id="navigation" ng-show="showNavigation" class="fill umb-modalcolumn" ng-animate="'slide'">
+    <div id="navigation" ng-show="showNavigation" class="fill umb-modalcolumn bookshelf-navigation" ng-animate="'slide'">
 
         <div ng-swipe-left="nav.hideNavigation()" class="navigation-inner-container span6" style="z-index: 100">
 
@@ -24,7 +24,9 @@
                                    ng-model="model.keywords"
                                    class="umb-search-field search-query"
                                    placeholder="Type to search your books..."
-                                   ng-keyup="search()" />
+                                   ng-keyup="search()"/>
+
+                            <button ng-hide="model.keywords.length == 0" class="btn btn btn-default clear-search" style="float: right;" ng-click="clear();">Clear</button>
                         </form>
                     </div>
                 </div>
@@ -34,10 +36,6 @@
 
                     <ul class="umb-tree">
                         <li class="root">
-                            <div>
-                                <h5>Bookshelf Search Results</h5>
-                            </div>
-
                             <div class="loading" ng-show="isLoading">
                                 <img src="/App_Plugins/UmbracoBookshelf/Assets/Images/loader.gif"/>LOADING...
                             </div>
@@ -51,17 +49,17 @@
                             </ul>
 
                             <ul class="umb-search-group" ng-repeat="book in model.books">
-                                <li>
+                                <li class="book-title">
                                     <div>
-                                        <h5>{{book.Name}}</h5>
+                                        <h5><i class="icon-book"></i>{{book.Name}}</h5>
                                     </div>
                                 </li>
                                 <li ng-repeat="result in book.Results">
                                     <div>
-                                        <a href="{{result.Url}}">{{result.Title}}</a>
-                                        <div>
-                                            <small>{{result.HintUrl}}</small>
-                                        </div>
+                                        <a href="{{result.Url}}">
+                                            <h5>{{result.Title}}</h5>
+                                            <h6>{{result.HintUrl}}</h6>
+                                        </a>
                                     </div>
                                 </li>
                             </ul>

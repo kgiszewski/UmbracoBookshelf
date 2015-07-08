@@ -118,23 +118,6 @@
         restrict: "A",
         link: linker
     }
-}).directive('umbracoBookshelfCtrlS', function() {
-
-    var linker = function(scope, element, attrs) {
-        $(document).keydown(function(e) {
-            if ((e.which == '115' || e.which == '83') && (e.ctrlKey || e.metaKey)) {
-                e.preventDefault();
-                scope.save();
-                return false;
-            }
-            return true;
-        });
-    }
-
-    return {
-        restrict: "E",
-        link: linker
-    }
 }).directive('autoGrow', function ($timeout) {
 
     var insertAtCaret = function (element, text) {
