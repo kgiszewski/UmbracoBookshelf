@@ -7,6 +7,12 @@
             "branch":"master"
         },
         {
+            "title": "Editor's Manual",
+            "user":"okhenry",
+            "repo":"V7-Editors-Manual",
+            "branch":"master"
+        },
+        {
             "title": "Learn Umbraco 7",
             "user":"kgiszewski",
             "repo":"LearnUmbraco7",
