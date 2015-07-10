@@ -9,6 +9,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using Examine;
+using HtmlAgilityPack;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
@@ -49,9 +50,17 @@ namespace UmbracoBookshelf.Controllers
 
                 var content = File.ReadAllText(systemFilePath);
 
+                var doc = new HtmlDocument();
+                doc.LoadHtml(content);
+
+                doc.DocumentNode.Descendants()
+                                .Where(n => n.Name == "script" || n.Name == "style")
+                                .ToList()
+                                .ForEach(n => n.Remove());
+
                 return new
                 {
-                    Content = content
+                    Content = doc.DocumentNode.OuterHtml
                 };
             }
             catch (Exception ex)
