@@ -50,11 +50,15 @@ namespace UmbracoBookshelf.Controllers
 
                 var content = File.ReadAllText(systemFilePath);
 
+
+                //remove blacklisted tags
+                var blacklistedTags = new string[] {"script", "style"};
+
                 var doc = new HtmlDocument();
                 doc.LoadHtml(content);
 
                 doc.DocumentNode.Descendants()
-                                .Where(n => n.Name == "script" || n.Name == "style")
+                                .Where(n => n.Name.ContainsAny(blacklistedTags))
                                 .ToList()
                                 .ForEach(n => n.Remove());
 
