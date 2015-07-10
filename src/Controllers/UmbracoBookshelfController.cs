@@ -9,7 +9,6 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using Examine;
-using HtmlAgilityPack;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
@@ -50,21 +49,9 @@ namespace UmbracoBookshelf.Controllers
 
                 var content = File.ReadAllText(systemFilePath);
 
-
-                //remove blacklisted tags
-                var blacklistedTags = new string[] {"script", "style"};
-
-                var doc = new HtmlDocument();
-                doc.LoadHtml(content);
-
-                doc.DocumentNode.Descendants()
-                                .Where(n => n.Name.ContainsAny(blacklistedTags))
-                                .ToList()
-                                .ForEach(n => n.Remove());
-
                 return new
                 {
-                    Content = doc.DocumentNode.OuterHtml
+                    Content = content
                 };
             }
             catch (Exception ex)
