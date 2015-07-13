@@ -60,7 +60,17 @@
             var pathOnFileSystemSections = pathOnFileSystem.split('/');
 
             if (newValue) {
-                var markup = element.html(marked(newValue));
+
+                var $markupHtml = $('<div>' + marked(newValue) + '</div>');
+
+                //clean out script tags (though we may need to expand this to img, comments and the like)
+                $markupHtml.find('script').each(function() {
+                    var $item = $(this);
+
+                    $item.remove();
+                });
+
+                var markup = element.html($markupHtml);
 
                 /* handle links */
                 markup.find('a').each(function () {
