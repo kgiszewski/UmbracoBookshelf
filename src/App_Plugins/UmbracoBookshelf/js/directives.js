@@ -156,7 +156,15 @@
 
         scope.$on("$routeChangeSuccess", function(event, current, previous) {
 
-            var isComingFromBookshelf = (previous && previous.pathParams.section.toLowerCase().indexOf("umbracobookshelf") != -1);
+            /*
+              For anyone that actually read this...
+
+              This is a way to avoid re-initializing the default navigation view. Without this bit of code, the UI flashes.
+
+              If it seems convoluted, it is. Apologies.
+            */
+
+            var isComingFromBookshelf = (previous && previous.pathParams.section && previous.pathParams.section.toLowerCase().indexOf("umbracobookshelf") != -1);
             var isOnBookshelf = (current.pathParams.section.toLowerCase().indexOf("umbracobookshelf") != -1);
 
             //if on bookshelf but not coming from bookshelf
@@ -172,6 +180,10 @@
                     //if coming from bookshelf
                     if (isComingFromBookshelf) {
                         getView("views/directives/umb-navigation.html?intercepted=1");
+                    } else {
+                        if (previous.loadedTemplateUrl.indexOf("login.html") != -1) {
+                            getView("views/directives/umb-navigation.html?intercepted=1");
+                        }
                     }
                 }
             }
