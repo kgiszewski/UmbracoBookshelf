@@ -8,10 +8,6 @@
 
         return request;
     };
-
-    service.responseError = function (response) {
-        return response;
-    };
 });
 
 angular.module('umbraco').config(function ($httpProvider) {
