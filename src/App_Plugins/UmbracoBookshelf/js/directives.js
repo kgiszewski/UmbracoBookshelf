@@ -181,7 +181,7 @@
                     if (isComingFromBookshelf) {
                         getView("views/directives/umb-navigation.html?intercepted=1");
                     } else {
-                        if (previous.loadedTemplateUrl.indexOf("login.html") != -1) {
+                        if (previous.loadedTemplateUrl && previous.loadedTemplateUrl.indexOf("login.html") != -1) {
                             getView("views/directives/umb-navigation.html?intercepted=1");
                         }
                     }
