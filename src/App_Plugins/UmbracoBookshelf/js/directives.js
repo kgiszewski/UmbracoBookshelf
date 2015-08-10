@@ -165,7 +165,7 @@
             */
 
             var isComingFromBookshelf = (previous && previous.pathParams.section && previous.pathParams.section.toLowerCase().indexOf("umbracobookshelf") != -1);
-            var isOnBookshelf = (current.pathParams.section.toLowerCase().indexOf("umbracobookshelf") != -1);
+            var isOnBookshelf = (current.pathParams && current.pathParams.section && current.pathParams.section.toLowerCase().indexOf("umbracobookshelf") != -1);
 
             //if on bookshelf but not coming from bookshelf
             if (isOnBookshelf) {
