@@ -5,10 +5,10 @@
     </umb-sections>
 
     <!-- navigation container -->
-    <div id="navigation" ng-show="showNavigation" class="fill umb-modalcolumn bookshelf-navigation" ng-animate="'slide'">
+    <div id="navigation" ng-show="showNavigation" class="fill umb-modalcolumn" ng-animate="'slide'" nav-resize>
 
-        <div ng-swipe-left="nav.hideNavigation()" class="navigation-inner-container span6" style="z-index: 100">
-
+        <div ng-swipe-left="nav.hideNavigation()" class="navigation-inner-container span6">
+            
             <!-- the search -->
             <div ng-controller="umbracoBookshelfSearchController">
 
@@ -24,7 +24,7 @@
                                    ng-model="model.keywords"
                                    class="umb-search-field search-query"
                                    placeholder="Type to search your books..."
-                                   ng-keyup="search()"/>
+                                   ng-keyup="search()" />
 
                             <button ng-hide="model.keywords.length == 0" class="btn btn btn-default clear-search" style="float: right;" ng-click="clear();">Clear</button>
                         </form>
@@ -37,10 +37,10 @@
                     <ul class="umb-tree">
                         <li class="root">
                             <div class="loading" ng-show="isLoading">
-                                <img src="/App_Plugins/UmbracoBookshelf/Assets/Images/loader.gif"/>LOADING...
+                                <img src="/App_Plugins/UmbracoBookshelf/Assets/Images/loader.gif" />LOADING...
                             </div>
 
-                            <ul class="umb-search-group"  ng-show="model.books.length == 0">
+                            <ul class="umb-search-group" ng-show="model.books.length == 0">
                                 <li>
                                     <div>
                                         <h6>No results.</h6>
