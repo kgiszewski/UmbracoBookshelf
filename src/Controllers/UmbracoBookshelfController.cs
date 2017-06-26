@@ -7,12 +7,14 @@ using Umbraco.Web.Mvc;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Web.Mvc;
+using System.Web;
+using Examine;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
 using Umbraco.Core;
 using Umbraco.Core.Logging;
+using UmbracoBookshelf.Examine;
 using UmbracoBookshelf.Models;
 using UmbracoBookshelf.Helpers;
 using Constants = UmbracoBookshelf.Helpers.Constants;
@@ -308,6 +310,8 @@ namespace UmbracoBookshelf.Controllers
 
                 Directory.Delete(downloadsDirectory, true);
 
+                ExamineManager.Instance.IndexProviderCollection["BookshelfIndexer"].RebuildIndex();
+
                 return new
                 {
                     Status = "Downloaded"
@@ -351,7 +355,7 @@ namespace UmbracoBookshelf.Controllers
             var systemPath = Path.GetDirectoryName(_ensureRootPath(currentPath).ToSystemPath());
             
             //search for any media files
-            var imageFiles = systemPath.GetFilesRecursively();
+            var imageFiles = systemPath.GetFilesRecursively(Constants.ALLOWED_IMAGE_EXTENSIONS);
 
             return imageFiles.Select(x => new ImageModel()
             {
@@ -359,6 +363,61 @@ namespace UmbracoBookshelf.Controllers
                 Alt = Path.GetFileName(x),
                 FilePath = x.ToWebPath(true)
             });
+        }
+
+        [System.Web.Http.HttpGet]
+        public object SearchFiles(string keywords)
+        {
+            var results = BookshelfSearcher.Search(keywords);
+
+            var data = new List<BookResultModel>();
+
+            if (results.Any())
+            {
+                var books = results.GroupBy(x => x.Fields["book"]);
+
+                var resultsPerBook = 10;
+
+                foreach (var book in books)
+                {
+                    var bookData = new BookResultModel()
+                    {
+                        Name = book.Key
+                    };
+
+                    var resultsList = new List<BookResultModel.BookEntry>();
+
+                    foreach(var result in book.OrderByDescending(x => x.Score).Take(resultsPerBook))
+                    {
+                        var hintUrl = HttpUtility.UrlDecode(HttpUtility.UrlDecode(result.Fields["url"]));
+                        var title = HttpUtility.UrlDecode(HttpUtility.UrlDecode(result.Fields["title"]));
+
+                        hintUrl = hintUrl.Substring(0, hintUrl.Length - title.Length - 3);
+
+                        var hintWindowLength = 50;
+
+                        if (hintUrl.Length - hintWindowLength > 0)
+                        {
+                            hintUrl = "…" + hintUrl.Substring(hintUrl.Length - hintWindowLength);
+                        }
+
+                        resultsList.Add(new BookResultModel.BookEntry()
+                        {
+                            Title = title,
+                            Url = result.Fields["url"],
+                            HintUrl = hintUrl,
+                            Score = result.Score.ToString()
+                        });
+
+                        bookData.TotalScore += result.Score;
+                    }
+
+                    bookData.Results = resultsList;
+                    data.Add(bookData);
+                }
+            }
+
+            return data.OrderByDescending(x => x.TotalScore);
         }
 
         private void ExtractZipFile(string archiveFilenameIn, string outFolder, string password = "")

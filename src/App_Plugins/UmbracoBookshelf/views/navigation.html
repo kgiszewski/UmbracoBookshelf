@@ -1,0 +1,104 @@
+﻿<div id="leftcolumn" ng-controller="Umbraco.NavigationController"
+     ng-mouseleave="leaveTree($event)" ng-mouseenter="enterTree($event)">
+
+    <umb-sections sections="sections" ng-if="authenticated">
+    </umb-sections>
+
+    <!-- navigation container -->
+    <div id="navigation" ng-show="showNavigation" class="fill umb-modalcolumn" ng-animate="'slide'" nav-resize>
+
+        <div ng-swipe-left="nav.hideNavigation()" class="navigation-inner-container span6">
+            
+            <!-- the search -->
+            <div ng-controller="umbracoBookshelfSearchController">
+
+                <!-- Search form -->
+                <div id="search-form">
+                    <div class="umb-modalcolumn-header">
+
+                        <form class="form-search" novalidate>
+                            <i class="icon-search"></i>
+                            <input type="text"
+                                   hotkey="ctrl+space"
+                                   id="search-field"
+                                   ng-model="model.keywords"
+                                   class="umb-search-field search-query"
+                                   placeholder="Type to search your books..."
+                                   ng-keyup="search()" />
+
+                            <button ng-hide="model.keywords.length == 0" class="btn btn btn-default clear-search" style="float: right;" ng-click="clear();">Clear</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Search results -->
+                <div id="search-results" class="umb-modalcolumn-body" ng-show="model.keywords">
+
+                    <ul class="umb-tree">
+                        <li class="root">
+                            <div class="loading" ng-show="isLoading">
+                                <img src="/App_Plugins/UmbracoBookshelf/Assets/Images/loader.gif" />LOADING...
+                            </div>
+
+                            <ul class="umb-search-group" ng-show="model.books.length == 0">
+                                <li>
+                                    <div>
+                                        <h6>No results.</h6>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <ul class="umb-search-group" ng-repeat="book in model.books">
+                                <li class="book-title">
+                                    <div>
+                                        <h5><i class="icon-book"></i>{{book.Name}}</h5>
+                                    </div>
+                                </li>
+                                <li ng-repeat="result in book.Results">
+                                    <div>
+                                        <a href="{{result.Url}}">
+                                            <h5>{{result.Title}}</h5>
+                                            <h6>{{result.HintUrl}}</h6>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- the tree -->
+            <div id="tree" class="umb-modalcolumn-body" ng-if="authenticated">
+                <umb-tree cachekey="_"
+                          eventhandler="treeEventHandler"
+                          section="{{currentSection}}">
+                </umb-tree>
+            </div>
+        </div>
+
+        <div class="offset6" style="z-index: 10">
+
+            <!-- The context menu -->
+            <div id='contextMenu' class="umb-modalcolumn fill shadow" ng-swipe-left="nav.hideMenu()" ng-show="showContextMenu" ng-animate="'slide'">
+                <umb-context-menu menu-dialog-title="{{menuDialogTitle}}"
+                                  current-section="{{currentSection}}"
+                                  current-node="menuNode"
+                                  menu-actions="menuActions">
+                </umb-context-menu>
+            </div>
+
+
+            <!-- Tree dialogs -->
+            <div id="dialog" class='umb-modalcolumn fill shadow'
+                 ng-swipe-left="nav.hideDialog()"
+                 ng-show="showContextMenuDialog" ng-animate="'slide'">
+                <div class='umb-modalcolumn-header'>
+                    <h1>{{menuDialogTitle}}</h1>
+                </div>
+                <div class='umb-modalcolumn-body'>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

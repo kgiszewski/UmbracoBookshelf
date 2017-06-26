@@ -85,7 +85,9 @@ namespace UmbracoBookshelf.Controllers
 
                 if (hasChildren && (dir.Attributes & FileAttributes.Hidden) == 0)
                 {
-                    var node = CreateTreeNode(orgPath + dir.Name, orgPath, queryStrings, dir.Name, "icon-folder", hasChildren);
+                    var icon = (id == "-1") ? "icon-book" : "icon-folder";
+
+                    var node = CreateTreeNode(orgPath + dir.Name, orgPath, queryStrings, dir.Name, icon, hasChildren);
 
                     node.RoutePath = "/UmbracoBookshelf/UmbracoBookshelfTree/folder/" + dir.FullName.ToWebPath();
 

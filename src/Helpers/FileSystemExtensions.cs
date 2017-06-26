@@ -47,31 +47,18 @@ namespace UmbracoBookshelf.Helpers
             return path;
         }
 
-        public static IEnumerable<string> GetFilesRecursively(this string startingDirectory)
+        public static IEnumerable<string> GetFilesRecursively(this string directory, IEnumerable<string> extensions)
         {
-            var list = new List<string>();
-
             try
             {
-                foreach (string dir in Directory.GetDirectories(startingDirectory))
-                {
-                    foreach (string file in Directory.GetFiles(dir))
-                    {
-                        if (Constants.ALLOWED_IMAGE_EXTENSIONS.Any(file.EndsWith))
-                        {
-                            list.Add(file);
-                        }
-                    }
-
-                    GetFilesRecursively(dir);
-                }
+                return Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories).Where(x => extensions.Any(x.EndsWith));
             }
             catch (Exception ex)
             {
                 LogHelper.Error<Exception>(ex.Message, ex);
-            }
 
-            return list;
+                return new List<string>();
+            }
         }
     }
 }

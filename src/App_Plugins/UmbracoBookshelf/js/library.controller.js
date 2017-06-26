@@ -34,7 +34,7 @@
     }
 
     $scope.getUpdatedOn = function(item) {
-        if (item.details) {
+        if (item.details && item.details.pushed_at) {
             return item.details.pushed_at.replace('T', ' ');
         }
 
@@ -49,7 +49,7 @@
         umbracoBookshelfResource.getBookFeed().then(function(data) {
             $scope.model.feed = data;
         }).then(function () {
-            angular.forEach($scope.model.feed.gitHub, function(feedItem) {
+            angular.forEach($scope.model.feed.gitHub, function (feedItem) {
                 umbracoBookshelfResource.getContributors(feedItem).then(function(contributors) {
                     feedItem.authors = contributors;
                 });

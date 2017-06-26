@@ -44,6 +44,11 @@
             return umbRequestHelper.resourcePromise(
                 $http.get("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/getsiblingfiles/?filePath=" + filePath), 'Failed to get sibling files'
             );
+        },
+        searchFiles: function (keywords) {
+            return umbRequestHelper.resourcePromise(
+                $http.get("/umbraco/backoffice/umbracobookshelfapi/umbracobookshelf/searchfiles/?keywords=" + keywords), 'Failed to search files'
+            );
         }
     }
 });

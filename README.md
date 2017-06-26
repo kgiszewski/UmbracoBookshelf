@@ -1,6 +1,12 @@
 # UmbracoBookshelf
 ![Bookshelf](https://github.com/kgiszewski/UmbracoBookshelf/blob/master/assets/logo.png)
 
+##Demo Video##
+
+Click the image below to see it in action.
+
+[![Bookshelf](http://img.youtube.com/vi/zunbKOPPf8U/0.jpg)](http://www.youtube.com/watch?v=zunbKOPPf8U)
+
 Bookshelf will allow users to create, display and share learning resources quickly through the Umbraco backoffice.
 
 Bookshelf works by reading markdown files from the `UmbracoBookshelf` folder of your website. 
@@ -42,3 +48,55 @@ MIT licensed, use it and abuse it.
 Umbraco Bookshelf is maintained by Kevin Giszewski.
 
 http://twitter.com/kevingiszewski
+
+##Uninstall##
+
+To uninstall, you will need to make sure you remove these files either manually or via Nuget `uninstall-package umbracobookshelf`
+
+~/App_Plugins/UmbracoBookshelf
+~/bin/UmbracoBookshelf.dll
+
+And edit these files:
+
+```
+~/config/dashboard.config
+
+Remove this element:
+  <section alias="UmbracoBookshelfSection">
+    <areas>
+      <area>UmbracoBookshelf</area>
+    </areas>
+    <tab caption="Library">
+      <control>/app_plugins/umbracobookshelf/backoffice/dashboards/library.html</control>
+    </tab>
+  </section>
+
+```
+
+```
+~/config/ExamineIndex.config
+
+Remove this element:
+
+  <IndexSet SetName="BookshelfIndexSet" IndexPath="~/App_Data/TEMP/ExamineIndexes/Bookshelf">
+    <IndexUserFields>
+      <add Name="id" />
+      <add Name="book" />
+      <add Name="path" />
+      <add Name="title" />
+      <add Name="text" />
+      <add Name="url" />
+    </IndexUserFields>
+  </IndexSet>
+```
+
+```
+~/config/ExamineSettings.config
+
+Remove these two elements:
+
+<add name="BookshelfIndexer" type="Examine.LuceneEngine.Providers.SimpleDataIndexer, Examine" dataService="UmbracoBookshelf.Examine.BookshelfExamineDataService,UmbracoBookshelf" indexTypes="Bookshelf" />
+
+<add name="BookshelfSearcher" type="Examine.LuceneEngine.Providers.LuceneSearcher, Examine" analyzer="Lucene.Net.Analysis.Standard.StandardAnalyzer, Lucene.Net" />
+
+```

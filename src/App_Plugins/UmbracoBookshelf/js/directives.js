@@ -41,7 +41,7 @@
         return input.substring(0, qMarkIndex);
     }
 
-    var linker = function(scope, element, attrs) {
+    var linker = function (scope, element, attrs) {
         marked.setOptions({
             highlight: function(code) {
                 hljs.initHighlightingOnLoad();
@@ -50,7 +50,6 @@
         });
 
         scope.$watch('model.content', function (newValue, oldValue) {
-
             //not sure why, but the urls are double encoded
             var url = decodeURIComponent($location.url());
             var isViewingFile = (url.indexOf('/file/') != -1);
@@ -61,10 +60,20 @@
             var pathOnFileSystemSections = pathOnFileSystem.split('/');
 
             if (newValue) {
-                var markup = element.html(marked(newValue));
+
+                var $markupHtml = $('<div>' + marked(newValue) + '</div>');
+
+                //clean out script tags (though we may need to expand this to img, comments and the like)
+                $markupHtml.find('script').each(function() {
+                    var $item = $(this);
+
+                    $item.remove();
+                });
+
+                var markup = element.html($markupHtml);
 
                 /* handle links */
-                markup.find('a').each(function() {
+                markup.find('a').each(function () {
                     var $a = $(this);
                     var href = $a.attr('href');
                     var relativePath = "";
@@ -85,7 +94,7 @@
                         var extension = href.split('.').pop();
 
                         //test for media downloads
-                        if (inArray(scope.config.fileExtensions, "." + extension)) {
+                        if (extension != 'md' && inArray(scope.config.fileExtensions, "." + extension)) {
                             $a.attr('href', relativePath + href);
                             $a.attr('target', '_blank');
                         } else {
@@ -97,7 +106,7 @@
                 });
 
                 /* fixup image relative paths */
-                markup.find('img').each(function() {
+                markup.find('img').each(function () {
                     var $img = $(this);
                     var relativePath = "";
 
@@ -118,25 +127,75 @@
         restrict: "A",
         link: linker
     }
-}).directive('umbracoBookshelfCtrlS', function() {
-
-    var linker = function(scope, element, attrs) {
-        $(document).keydown(function(e) {
-            if ((e.which == '115' || e.which == '83') && (e.ctrlKey || e.metaKey)) {
-                e.preventDefault();
-                scope.save();
-                return false;
+}).directive('autoGrow', function ($timeout) {
+    var linker = function (scope, element, attrs) {
+        scope.$watch('isEditing', function (newValue, oldValue) {
+            if (newValue) {
+                $timeout(function() {
+                    element.autogrow();
+                }, 100);
             }
-            return true;
+        });
+    }
+
+    return {
+        restrict: "A",
+        link: linker
+    }
+}).directive('umbracoBookshelfNavigation', function ($http, $compile) {
+
+    function linker(scope, element, attrs) {
+        function getView(view) {
+            $http.get(view, { cache: false }).then(function (data) {
+
+                element.html(data.data).show();
+
+                $compile(element.contents())(scope);
+            });
+        }
+
+        scope.$on("$routeChangeSuccess", function(event, current, previous) {
+
+            /*
+              For anyone that actually read this...
+
+              This is a way to avoid re-initializing the default navigation view. Without this bit of code, the UI flashes.
+
+              If it seems convoluted, it is. Apologies.
+            */
+
+            var isComingFromBookshelf = (previous && previous.pathParams.section && previous.pathParams.section.toLowerCase().indexOf("umbracobookshelf") != -1);
+            var isOnBookshelf = (current.pathParams && current.pathParams.section && current.pathParams.section.toLowerCase().indexOf("umbracobookshelf") != -1);
+
+            //if on bookshelf but not coming from bookshelf
+            if (isOnBookshelf) {
+                if (!isComingFromBookshelf) {
+                    getView("/App_Plugins/UmbracoBookshelf/Views/navigation.html");
+                }
+            } else {
+                //if first time viewed
+                if (!previous) {
+                    getView("views/directives/umb-navigation.html?intercepted=1");
+                } else {
+                    //if coming from bookshelf
+                    if (isComingFromBookshelf) {
+                        getView("views/directives/umb-navigation.html?intercepted=1");
+                    } else {
+                        if (previous.loadedTemplateUrl && previous.loadedTemplateUrl.indexOf("login.html") != -1) {
+                            getView("views/directives/umb-navigation.html?intercepted=1");
+                        }
+                    }
+                }
+            }
         });
     }
 
     return {
         restrict: "E",
-        link: linker
+        link: linker,
+        replace: true
     }
-}).directive('autoGrow', function ($timeout) {
-
+}).directive('insertMd', function() {
     var insertAtCaret = function (element, text) {
         text = text || '';
         if (document.selection) {
@@ -158,17 +217,12 @@
         }
     };
 
-    var linker = function (scope, element, attrs) {
-        scope.$watch('isEditing', function (newValue, oldValue) {
-            if (newValue) {
-                $timeout(function() {
-                    element.autogrow();
-                }, 100);
-            }
-        });
-
+    function linker(scope, element, attrs) {
         scope.$on('insertMd', function (ev, args) {
             insertAtCaret(element.get(0), "\n" + args.md + "\n");
+            scope.makeDirty();
+
+            scope.$emit('insertMdComplete');
         });
     }
 

@@ -3,7 +3,13 @@
         {
             "title": "Official Umbraco Documentation",
             "user":"umbraco",
-            "repo":"Umbraco4Docs",
+            "repo":"UmbracoDocs",
+            "branch":"master"
+        },
+        {
+            "title": "Editor's Manual",
+            "user":"okhenry",
+            "repo":"V7-Editors-Manual",
             "branch":"master"
         },
         {
