@@ -15,14 +15,9 @@ namespace UmbracoBookshelf.Controllers
     [Umbraco.Web.Trees.Tree("UmbracoBookshelf", "UmbracoBookshelfTree", "Umbraco Bookshelf", iconClosed: "icon-folder")]
     public class UmbracoBookshelfTreeController : FileSystemTreeController
     {
-        protected override string FilePath
+        public string FilePath
         {
             get { return Helpers.Constants.ROOT_DIRECTORY; }
-        }
-
-        protected override string FileSearchPattern
-        {
-            get { return "*" + Helpers.Constants.MARKDOWN_FILE_EXTENSION; }
         }
 
         protected override MenuItemCollection GetMenuForNode(string id, FormDataCollection queryStrings)
@@ -47,6 +42,21 @@ namespace UmbracoBookshelf.Controllers
 
             return menu;
         }
+
+        protected override IFileSystem2 FileSystem
+        {
+            get { return new PhysicalFileSystem(FilePath); }
+        }
+
+        protected override string[] Extensions
+        {
+            get
+            {
+                return new []{Helpers.Constants.MARKDOWN_FILE_EXTENSION};
+            }
+        }
+
+        protected override string FileIcon { get { return string.Empty; } }
 
         protected override TreeNodeCollection GetTreeNodes(string id, FormDataCollection queryStrings)
         {
@@ -91,24 +101,24 @@ namespace UmbracoBookshelf.Controllers
 
                     node.RoutePath = "/UmbracoBookshelf/UmbracoBookshelfTree/folder/" + dir.FullName.ToWebPath();
 
-                    if (node != null)
-                        nodes.Add(node);
+                    nodes.Add(node);
                 }
             }
 
             //this is a hack to enable file system tree to support multiple file extension look-up
             //so the pattern both support *.* *.xml and xml,js,vb for lookups
             var allowedExtensions = new string[0];
-            var filterByMultipleExtensions = FileSearchPattern.Contains(",");
+            var filterByMultipleExtensions = Extensions.Length > 1;
+
             FileInfo[] fileInfo;
 
             if (filterByMultipleExtensions)
             {
                 fileInfo = dirInfo.GetFiles();
-                allowedExtensions = FileSearchPattern.ToLower().Split(',');
+                allowedExtensions = Extensions;
             }
             else
-                fileInfo = dirInfo.GetFiles(FileSearchPattern);
+                fileInfo = dirInfo.GetFiles("*" + Extensions.First());
 
             foreach (var file in fileInfo)
             {
@@ -121,8 +131,7 @@ namespace UmbracoBookshelf.Controllers
 
                     node.RoutePath = "/UmbracoBookshelf/UmbracoBookshelfTree/file/" + file.FullName.ToWebPath();
 
-                    if (node != null)
-                        nodes.Add(node);
+                    nodes.Add(node);
                 }
             }
 

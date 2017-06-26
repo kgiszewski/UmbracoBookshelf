@@ -12,7 +12,7 @@
         <iconUrl>http://github.com/kgiszewski/umbracobookshelf/raw/master/assets/logo.png</iconUrl>
         <licenseUrl><%= licenseUrl %></licenseUrl>
         <dependencies>
-            <dependency id="UmbracoCms.Core" version="7.3.0" />
+            <dependency id="UmbracoCms.Core" version="7.6.3" />
         </dependencies>
     </metadata>
 </package>
